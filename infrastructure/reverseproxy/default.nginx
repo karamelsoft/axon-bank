@@ -1,0 +1,35 @@
+server {
+  listen        80;
+  server_name   localhost;
+  resolver      127.0.0.11 valid=5s;
+
+  #charset koi8-r;
+  #access_log  /var/log/nginx/host.access.log  main;
+
+  location / {
+    root   /usr/share/nginx/html;
+    index  index.html index.htm;
+  }
+
+  #error_page  404              /404.html;
+
+  # redirect server error pages to the static page /50x.html
+  #
+  error_page   500 502 503 504  /50x.html;
+  location = /50x.html {
+    root   /usr/share/nginx/html;
+  }
+
+  location /infrastructure/axon/ {
+    proxy_pass http://axonserver:8024/;
+  }
+
+  location ~ /service/([a-z-]+)/([a-z-]+) {
+    set $service $1;
+    set $module $2;
+    rewrite /service/[a-z-]+/[a-z-]+/(.*) /$1 break;
+
+    proxy_pass http://$service-$module:8080;
+  }
+
+}

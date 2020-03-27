@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+
+  patients-command:
+    image: karamelsoft/patients-command:latest
+    environment:
+      #- JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+    #ports:
+    #  - "18000:8000"
+    networks:
+      - karamelsoft
+
+  patients-query:
+    image: karamelsoft/patients-query:latest
+    environment:
+      #- JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+    #ports:
+    #  - "18000:8000"
+    networks:
+      - karamelsoft
+
+  patients-rest:
+    image: karamelsoft/patients-rest:latest
+    environment:
+      #- JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+    #ports:
+    #  - "18000:8000"
+    networks:
+      - karamelsoft
+
+networks:
+  karamelsoft:
+    external: true

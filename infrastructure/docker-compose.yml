@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+
+  axonserver:
+    image: axoniq/axonserver:latest
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    networks:
+      - karamelsoft
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "15432:5432"
+    networks:
+      - karamelsoft
+
+  reverseproxy:
+    image: karamelsoft/reverseproxy:latest
+    ports:
+      - "8081:80"
+    networks:
+      - karamelsoft
+
+networks:
+  karamelsoft:
+    external: true

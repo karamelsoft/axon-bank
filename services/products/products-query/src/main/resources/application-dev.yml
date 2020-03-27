@@ -1,0 +1,9 @@
+logging:
+  level:
+    root: info
+    com.karamelsoft: trace
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update

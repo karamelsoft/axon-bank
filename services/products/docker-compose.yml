@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+
+  products-command:
+    image: karamelsoft/products-command:latest
+    environment:
+#      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+#    ports:
+#      - "18000:8000"
+    networks:
+      - karamelsoft
+
+  products-query:
+    image: karamelsoft/products-query:latest
+    environment:
+      #- JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+    #ports:
+    #  - "18000:8000"
+    networks:
+      - karamelsoft
+
+  products-rest:
+    image: karamelsoft/products-rest:latest
+    environment:
+      #- JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+      - SPRING_PROFILES_ACTIVE=dev,swarm
+    #ports:
+    #  - "18000:8000"
+    networks:
+      - karamelsoft
+
+networks:
+  karamelsoft:
+    external: true
