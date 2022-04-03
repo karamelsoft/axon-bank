@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor = org.karamelsoft.research.axon.libraries.service.module.ConfigPropertiesLoader

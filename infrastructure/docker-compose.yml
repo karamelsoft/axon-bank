@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+
+  reverseproxy:
+    image: axondemo/reverseproxy:latest
+    ports:
+      - '8081:80'
+    networks:
+      - axon-demo
+
+  axonserver:
+    image: axoniq/axonserver:latest
+    ports:
+      - '8024:8024'
+      - '8124:8124'
+      - '8224:8224'
+    networks:
+      - axon-demo
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: r00t
+    networks:
+      - axon-demo
+
+  postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "15432:5432"
+    networks:
+      - axon-demo
+
+networks:
+  axon-demo:
+    external: true

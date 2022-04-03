@@ -1,0 +1,9 @@
+
+---
+spring:
+  profiles: swarm
+  data:
+    mongodb:
+      host: mongo
+
+
