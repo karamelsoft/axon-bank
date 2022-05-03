@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  cards-command:
+    image: axondemo/cards-command:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm
+    networks:
+      - axon-demo
+
+networks:
+  axon-demo:
+    external: true

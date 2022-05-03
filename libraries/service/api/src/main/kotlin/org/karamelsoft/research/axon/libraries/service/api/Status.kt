@@ -16,14 +16,6 @@ sealed interface Status<T> {
     fun <U> andThenFlatten(next: (T) -> Status<U>): Status<U>
 }
 
-fun <T, U> CompletableFuture<Status<T>>.andThen(next: (T) -> U): CompletableFuture<Status<U>> {
-    return this.thenApply { status -> status.andThen(next) }
-}
-
-fun <T, U> CompletableFuture<Status<T>>.andThenFlatten(next: (T) -> CompletableFuture<Status<U>>): CompletableFuture<Status<U>> {
-    return this.thenCompose { status -> status.map(next) { CompletableFuture.completedFuture(status.orCastTo()) } }
-}
-
 interface Success<T>: Status<T> {
     val value: T
 }

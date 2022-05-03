@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  customer-dashboard-query:
+    image: axondemo/customer-dashboard-query:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm
+    networks:
+      - axon-demo
+
+networks:
+  axon-demo:
+    external: true

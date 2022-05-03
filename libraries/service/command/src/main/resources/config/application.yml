@@ -1,0 +1,43 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+axon:
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson
+  axonserver:
+    keep-alive-timeout: 30000
+    keep-alive-time: 5000
+    heartbeat:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: info
+    com.karamelsoft: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: swarm
+
+axon:
+  axonserver:
+    servers: axonserver
+
+logging:
+  level:
+    root: info
+    com.karamelsoft: trace
+

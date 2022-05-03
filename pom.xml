@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.karamelsoft.axon.demo</groupId>
@@ -15,12 +16,15 @@
 		<axon.version>4.5.11</axon.version>
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<guava.version>31.0.1-jre</guava.version>
+		<kotlin-logging.version>2.0.3</kotlin-logging.version>
 	</properties>
 
 	<modules>
 		<module>libraries</module>
 		<module>domains</module>
 		<module>views</module>
+        <module>orchestrators</module>
+		<module>interfaces</module>
 	</modules>
 
 	<dependencyManagement>
@@ -48,6 +52,11 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.karamelsoft.axon.demo.libraries</groupId>
+				<artifactId>mongo</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.karamelsoft.axon.demo.libraries.secrets</groupId>
 				<artifactId>secrets-docker</artifactId>
 				<version>${project.version}</version>
@@ -65,6 +74,11 @@
 			<dependency>
 				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
 				<artifactId>module</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<artifactId>orchestrator</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -93,11 +107,21 @@
 				<artifactId>customers-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.karamelsoft.axon.demo.views.customer.dashboard</groupId>
+				<artifactId>customer-dashboard-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.microutils</groupId>
+				<artifactId>kotlin-logging</artifactId>
+				<version>${kotlin-logging.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -112,11 +136,32 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.jetbrains.kotlin</groupId>
 					<artifactId>kotlin-maven-plugin</artifactId>
 					<version>${kotlin.version}</version>
+					<executions>
+						<execution>
+							<id>compile</id>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>test-compile</id>
+							<goals>
+								<goal>test-compile</goal>
+							</goals>
+						</execution>
+					</executions>
 					<configuration>
 						<args>
 							<arg>-Xjsr305=strict</arg>
@@ -147,8 +192,9 @@
 						</execution>
 					</executions>
 					<configuration>
-						<repository>karamelsoft</repository>
+						<repository>axondemo/${project.artifactId}</repository>
 						<tag>${project.version}</tag>
+						<tag>latest</tag>
 						<buildArgs>
 							<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
 						</buildArgs>

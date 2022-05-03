@@ -1,0 +1,39 @@
+###
+# @name = Register Account
+PUT http://localhost:8081/service/interfaces/http/accounts/BE50377032997519
+Content-Type: application/json
+
+{
+    "owner": {
+        "reference": "Fred"
+    }
+}
+
+###
+# @name = Deposit Amount
+POST http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/deposit
+Content-Type: application/json
+
+{
+  "amount": 28.43,
+  "from": "Robert",
+  "description": "For the drinks at the bar"
+}
+
+###
+# @name = Withdraw Amount
+POST http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/withdraw
+Content-Type: application/json
+
+{
+  "amount": 15.78,
+  "to": "Myself",
+  "description": "For the amazing party"
+}
+
+###
+# @name = Get Account History
+GET http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/history
+Content-Type: application/json
+
+

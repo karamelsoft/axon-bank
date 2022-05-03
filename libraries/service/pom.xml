@@ -19,6 +19,7 @@
         <module>api</module>
         <module>command</module>
         <module>module</module>
+        <module>orchestrator</module>
         <module>rest</module>
         <module>view</module>
     </modules>

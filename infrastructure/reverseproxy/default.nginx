@@ -24,6 +24,10 @@ server {
     proxy_pass http://axonserver:8024/;
   }
 
+  location /infrastructure/mongo/ {
+    proxy_pass http://mongo:8024/;
+  }
+
   location ~ /service/([a-z-]+)/([a-z-]+) {
     set $service $1;
     set $module $2;

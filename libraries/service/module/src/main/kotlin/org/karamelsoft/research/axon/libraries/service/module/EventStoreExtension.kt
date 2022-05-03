@@ -1,14 +1,6 @@
 package org.karamelsoft.research.axon.libraries.service.module
 
 import org.axonframework.eventsourcing.eventstore.EventStore
+import reactor.core.publisher.Flux
 
-interface Projection<E, P : Projection<E, P>> {
-    val aggregateId: Any
-    fun handle(event: E): P
-}
-
-fun <E, P : Projection<E, P>> EventStore.projectionFor(projection: P): P {
-    return this.readEvents(projection.aggregateId.toString())
-        .asSequence()
-        .fold(projection) { proj, event -> proj.handle(event.payload as E)}
-}
+fun EventStore.readEvents(aggregateId: Any) = Flux.fromStream(this.readEvents(aggregateId.toString()).asStream())
