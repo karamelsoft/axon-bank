@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = org.karamelsoft.research.axon.libraries.mongo.MongoAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = org.karamelsoft.axon.demo.libraries.mongo.MongoAutoConfiguration

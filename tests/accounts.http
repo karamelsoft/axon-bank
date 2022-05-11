@@ -1,17 +1,6 @@
 ###
-# @name = Register Account
-PUT http://localhost:8081/service/interfaces/http/accounts/BE50377032997519
-Content-Type: application/json
-
-{
-    "owner": {
-        "reference": "Fred"
-    }
-}
-
-###
 # @name = Deposit Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/deposit
+POST http://localhost:8081/service/interfaces/http/accounts/BE28193654508115/deposit
 Content-Type: application/json
 
 {
@@ -22,7 +11,7 @@ Content-Type: application/json
 
 ###
 # @name = Withdraw Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/withdraw
+POST http://localhost:8081/service/interfaces/http/accounts/BE28193654508115/withdraw
 Content-Type: application/json
 
 {
@@ -33,7 +22,5 @@ Content-Type: application/json
 
 ###
 # @name = Get Account History
-GET http://localhost:8081/service/interfaces/http/accounts/BE86205824525341/history
+GET http://localhost:8081/service/interfaces/http/accounts/BE28193654508115/history
 Content-Type: application/json
-
-

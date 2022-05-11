@@ -10,6 +10,9 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.demo.services.cards.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import java.time.Instant
+import java.time.LocalDate
+
+const val MAX_WRONG_ATTEMPTS = 3
 
 @Aggregate
 internal class Card {
@@ -21,11 +24,12 @@ internal class Card {
     private var blocked: Boolean = false
     private var wrongAttempts: Int = 0
 
-    private fun notValidAnymore() = !(validity?.isAfter(Instant.now()) ?: false)
+    private fun notValidAnymore() = validity!!.isBefore(LocalDate.now())
+    private fun pinInvalid(pin: CardPinCode) = !(pinCode!!.validatePin(pin))
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewCard) = Status.of {
+    fun handle(command: RegisterNewCard): Status<Unit> = Status.of {
         AggregateLifecycle.apply(
             NewCardRegistered(
                 cardId = command.cardId,
@@ -44,9 +48,9 @@ internal class Card {
     }
 
     @CommandHandler
-    fun handle(command: BlockCard) =
+    fun handle(command: BlockCard): Status<Unit> =
         if (blocked) cardAlreadyBlocked()
-        else Status.of {
+        else Status.of<Unit> {
             AggregateLifecycle.apply(
                 CardBlocked(
                     cardId = cardId,
@@ -61,11 +65,11 @@ internal class Card {
     }
 
     @CommandHandler
-    fun handle(command: SetupCardPinCode) = when {
+    fun handle(command: SetupCardPinCode): Status<Unit> = when {
         notValidAnymore() -> cardInvalid()
         blocked -> cardBlocked()
         pinCode != null -> cardPinCodeAlreadySetup()
-        else -> Status.of {
+        else -> Status.of<Unit> {
             AggregateLifecycle.apply(
                 CardPinCodeSetup(
                     cardId = cardId,
@@ -82,12 +86,12 @@ internal class Card {
     }
 
     @CommandHandler
-    fun handle(command: ChangeCardPinCode) = when {
+    fun handle(command: ChangeCardPinCode): Status<Unit> = when {
         notValidAnymore() -> cardInvalid()
         blocked -> cardBlocked()
         pinCode == null -> undefinedCardPinCode()
-        !(pinCode!!.validateCode(command.currentPinCode)) -> wrongCardPinCode()
-        else -> Status.of {
+        pinInvalid(command.currentPinCode) -> rejectPinCode(command.timestamp)
+        else -> Status.of<Unit> {
             AggregateLifecycle.apply(
                 CardPinCodeChanged(
                     cardId = cardId,
@@ -104,21 +108,40 @@ internal class Card {
     }
 
     @CommandHandler
-    fun handle(command: ValidateCardPinCode) = when {
+    fun handle(command: ValidateCardPinCode): Status<Unit> = when {
         notValidAnymore() -> cardInvalid()
         blocked -> cardBlocked()
         pinCode == null -> undefinedCardPinCode()
-        !(pinCode!!.validateCode(command.pinCode)) -> Status.of {
-            AggregateLifecycle.apply(PinCodeRejected(
+        pinInvalid(command.pinCode) -> rejectPinCode(command.timestamp)
+        else -> Status.of<Unit> {
+            AggregateLifecycle.apply(CardPinCodeValidated(
                 cardId = cardId,
                 timestamp = command.timestamp
             ))
         }
-        else -> Status.of {
-            AggregateLifecycle.apply(PinCodeValidated(
+    }
+
+    @EventSourcingHandler
+    fun on(event: CardPinCodeValidationFailed) {
+        wrongAttempts++
+    }
+
+    @EventSourcingHandler
+    fun on(event: CardPinCodeValidated) {
+        wrongAttempts = 0
+    }
+
+    fun rejectPinCode(timestamp: Instant = Instant.now()): Status<Unit> {
+        AggregateLifecycle.apply(CardPinCodeValidationFailed(
+            cardId = cardId,
+            timestamp = timestamp
+        ))
+        if (wrongAttempts >= MAX_WRONG_ATTEMPTS) {
+            AggregateLifecycle.apply(CardBlocked(
                 cardId = cardId,
-                timestamp = command.timestamp
+                timestamp = timestamp
             ))
         }
+        return wrongCardPinCode()
     }
 }

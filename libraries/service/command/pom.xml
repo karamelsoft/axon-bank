@@ -23,6 +23,11 @@
             <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
             <artifactId>module</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+            <artifactId>command-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

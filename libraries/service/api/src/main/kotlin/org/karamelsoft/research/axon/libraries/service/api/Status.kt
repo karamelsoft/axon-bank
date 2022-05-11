@@ -1,7 +1,5 @@
 package org.karamelsoft.research.axon.libraries.service.api
 
-import java.util.concurrent.CompletableFuture
-
 sealed interface Status<T> {
     companion object {
         fun <T> of(operation: () -> T) = try {
@@ -11,9 +9,9 @@ sealed interface Status<T> {
         }
     }
     fun <U> map(mapping: (T) ->  U, or: () -> U) : U
-    fun <U> orCastTo(): Status<U>
-    fun <U> andThen(next: (T) -> U): Status<U>
-    fun <U> andThenFlatten(next: (T) -> Status<U>): Status<U>
+    fun <U> andThen(next: (T) -> Status<U>): Status<U>
+
+    fun orThen(operation: () -> Status<T>): Status<T>
 }
 
 interface Success<T>: Status<T> {
@@ -21,21 +19,22 @@ interface Success<T>: Status<T> {
 }
 
 data class Ok<T>(override val value: T): Success<T> {
-    override fun <U> orCastTo() = throw IllegalStateException()
-    override fun <U> andThen(next: (T) -> U) = Ok(next(value))
-    override fun <U> andThenFlatten(next: (T) -> Status<U>) = next(value)
+    override fun <U> andThen(next: (T) -> Status<U>) = next(value)
     override fun <U> map(mapping: (T) -> U, or: () -> U) = mapping(value)
+    override fun orThen(operation: () -> Status<T>) = this
 }
 
 sealed class Error<T>(open val message: String): Status<T> {
-    override fun <U> andThen(next: (T) -> U) = orCastTo<U>()
-    override fun <U> andThenFlatten(next: (T) -> Status<U>) = orCastTo<U>()
+    override fun <U> andThen(next: (T) -> Status<U>) = orCastTo<U>()
     override fun <U> map(mapping: (T) -> U, or: () -> U) = or()
+    abstract fun <U> orCastTo(): Status<U>
+    override fun orThen(operation: () -> Status<T>) = operation()
     abstract fun toException() : Exception
 }
 
 data class BadInput<T>(override val message: String): Error<T>(message) {
     override fun <U> orCastTo() = BadInput<U>(message)
+
     override fun toException() = IllegalArgumentException(message)
 }
 

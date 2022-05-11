@@ -8,11 +8,6 @@ interface AccountAction {
     val timestamp: Instant
 }
 
-data class AccountRegistration(
-    val owner: AccountOwner,
-    override val timestamp: Instant = Instant.now()
-) : AccountAction
-
 data class AmountDeposit(
     val amount: Double,
     val from: String,

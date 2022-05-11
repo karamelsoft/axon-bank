@@ -17,7 +17,8 @@
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<kotlin-logging.version>2.0.3</kotlin-logging.version>
-	</properties>
+        <mockk.version>1.10.0</mockk.version>
+    </properties>
 
 	<modules>
 		<module>libraries</module>
@@ -73,6 +74,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<artifactId>command-test</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
 				<artifactId>module</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -84,6 +90,11 @@
 			<dependency>
 				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
 				<artifactId>rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<artifactId>test</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -123,7 +134,12 @@
 				<artifactId>kotlin-logging</artifactId>
 				<version>${kotlin-logging.version}</version>
 			</dependency>
-		</dependencies>
+            <dependency>
+                <groupId>io.mockk</groupId>
+                <artifactId>mockk</artifactId>
+                <version>${mockk.version}</version>
+            </dependency>
+        </dependencies>
 	</dependencyManagement>
 
 	<build>

@@ -24,7 +24,8 @@ spring:
 logging:
   level:
     root: info
-    com.karamelsoft: trace
+    org.karamelsoft: trace
+    org.axonframework: trace
 
 ---
 spring:
@@ -39,5 +40,5 @@ axon:
 logging:
   level:
     root: info
-    com.karamelsoft: trace
-
+    org.karamelsoft: trace
+    org.axonframework: trace

@@ -1,12 +1,10 @@
 package org.karamelsoft.axon.demo.services.cards.api
 
 import com.google.common.hash.Hashing
-import java.time.Instant
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
 import java.util.regex.Pattern
 
 private val cardIdPattern: Pattern = Pattern.compile("\\d{16}")
@@ -37,19 +35,17 @@ data class CardValidity(val month: Month = currentMonth(), val year: Year = curr
         }
     }
 
-    fun isAfter(timestamp: Instant): Boolean {
-        val date = LocalDate.from(timestamp)
-        val dateYear = date.year
-        val dateMonth = date.month
-
-        return year.value >= dateYear && month.value >= dateMonth.value
+    fun isBefore(date: LocalDate) = when {
+        date.year > year.value -> true
+        date.year == year.value && date.month.value > month.value -> true
+        else -> false
     }
 }
 
 private fun hashingFunction() = Hashing.sha256()
 private fun hash(code: String) = hashingFunction().newHasher().putBytes(code.toByteArray()).hash().asLong()
 
-data class CardPinCode(private val hash: Long) {
+data class CardPinCode(val hash: Long) {
     companion object {
         fun of(code: String): CardPinCode {
             if (!pinCodePattern.matcher(code).matches()) {
@@ -60,5 +56,5 @@ data class CardPinCode(private val hash: Long) {
         }
     }
 
-    fun validateCode(code: CardPinCode) = (hash == code.hash)
+    fun validatePin(code: CardPinCode) = (hash == code.hash)
 }

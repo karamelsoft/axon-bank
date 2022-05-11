@@ -1,0 +1,52 @@
+###
+# @name = Block card
+POST http://localhost:8081/service/interfaces/http/cards/4625359959571301/block
+Content-Type: application/json
+
+{
+  "amount": 28.43,
+  "from": "Robert",
+  "description": "For the drinks at the bar"
+}
+
+###
+# @name = Setup Pin Card
+PUT http://localhost:8081/service/interfaces/http/cards/4625359959571301/pin/setup
+Content-Type: application/json
+
+{
+  "pinCode": "1234"
+}
+
+###
+# @name = Change Pin Card
+POST http://localhost:8081/service/interfaces/http/cards/4625359959571301/pin/change
+Content-Type: application/json
+
+{
+  "currentPinCode": "1234",
+  "newPinCode": "2468"
+}
+
+###
+# @name = Validate Pin Card
+POST http://localhost:8081/service/interfaces/http/cards/4625359959571301/pin/validate
+Content-Type: application/json
+
+{
+  "currentPinCode": "1234"
+}
+
+###
+# @name = Validate Pin Card With Wrong Code
+POST http://localhost:8081/service/interfaces/http/cards/4625359959571301/pin/validate
+Content-Type: application/json
+
+{
+  "currentPinCode": "2341"
+}
+
+###
+# @name = Get Card History
+GET http://localhost:8081/service/interfaces/http/cards/4625359959571301/history
+Content-Type: application/json

@@ -10,6 +10,7 @@ import org.karamelsoft.axon.demo.services.customers.api.RegisterNewCustomer
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.CustomerDashboardResponse
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.GetCustomerDashboard
 import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.service.rest.handleStatus
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
@@ -22,41 +23,58 @@ class CustomerController(
 ) {
 
     @PostMapping()
-    fun registerCustomerWithoutId(@RequestBody action: CustomerRegistration): Mono<Status<CustomerId>> {
-        return commandGateway.send(RegisterNewCustomer(
-            customerId = CustomerId(),
-            details = action.details,
-            address = action.address,
-            timestamp = action.timestamp
-        ))
+    fun registerCustomerWithoutId(@RequestBody action: CustomerRegistration): Mono<CustomerId> {
+        return commandGateway.send<Status<CustomerId>>(
+            RegisterNewCustomer(
+                customerId = CustomerId(),
+                details = action.details,
+                address = action.address,
+                timestamp = action.timestamp
+            )
+        ).handleStatus()
     }
 
     @PutMapping("/{customerId}")
-    fun registerCustomer(@PathVariable("customerId") customerId: String, @RequestBody action: CustomerRegistration): Mono<Status<Void>> {
-        return commandGateway.send(RegisterNewCustomer(
-            customerId = CustomerId.of(customerId),
-            details = action.details,
-            address = action.address,
-            timestamp = action.timestamp
-        ))
+    fun registerCustomer(
+        @PathVariable("customerId") customerId: String,
+        @RequestBody action: CustomerRegistration
+    ): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
+            RegisterNewCustomer(
+                customerId = CustomerId.of(customerId),
+                details = action.details,
+                address = action.address,
+                timestamp = action.timestamp
+            )
+        ).handleStatus()
     }
 
     @PutMapping("/{customerId}/details")
-    fun correctCustomerAddress(@PathVariable("customerId") customerId: String, @RequestBody action: CustomerDetailsCorrection): Mono<Status<Void>> {
-        return commandGateway.send(CorrectCustomerDetails(
-            customerId = CustomerId.of(customerId),
-            newDetails = action.newDetails,
-            timestamp = action.timestamp
-        ))
+    fun correctCustomerAddress(
+        @PathVariable("customerId") customerId: String,
+        @RequestBody action: CustomerDetailsCorrection
+    ): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
+            CorrectCustomerDetails(
+                customerId = CustomerId.of(customerId),
+                newDetails = action.newDetails,
+                timestamp = action.timestamp
+            )
+        ).handleStatus()
     }
 
     @PutMapping("/{customerId}/address")
-    fun correctCustomerAddress(@PathVariable("customerId") customerId: String, @RequestBody action: CustomerAddressCorrection): Mono<Status<Void>> {
-        return commandGateway.send(CorrectCustomerAddress(
-            customerId = CustomerId.of(customerId),
-            newAddress= action.newAddress,
-            timestamp = action.timestamp
-        ))
+    fun correctCustomerAddress(
+        @PathVariable("customerId") customerId: String,
+        @RequestBody action: CustomerAddressCorrection
+    ): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
+            CorrectCustomerAddress(
+                customerId = CustomerId.of(customerId),
+                newAddress = action.newAddress,
+                timestamp = action.timestamp
+            )
+        ).handleStatus()
     }
 
     @GetMapping("/{customerId}/dashboard")

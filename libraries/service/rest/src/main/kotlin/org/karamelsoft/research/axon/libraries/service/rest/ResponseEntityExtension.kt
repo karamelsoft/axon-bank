@@ -1,19 +1,15 @@
 package org.karamelsoft.research.axon.libraries.service.rest
 
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import java.util.concurrent.CompletableFuture
+import org.karamelsoft.research.axon.libraries.service.api.*
+import reactor.core.publisher.Mono
 
-fun <T> CompletableFuture<T>.toCommandResponse() = this.thenApply { it.toCommandResponse() }
-
-fun <T> T.toCommandResponse() = when (this) {
-    null -> ResponseEntity(HttpStatus.ACCEPTED)
-    else -> ResponseEntity(this, HttpStatus.ACCEPTED)
-}
-
-fun <T> CompletableFuture<T>.toQueryResponse() = this.thenApply { it.toQueryResponse() }
-
-fun <T> T.toQueryResponse() = when (this) {
-    null -> ResponseEntity(HttpStatus.NOT_FOUND)
-    else -> ResponseEntity(this, HttpStatus.OK)
+fun <T : Any> Mono<Status<T>>.handleStatus(): Mono<T> = this.map { status ->
+    when (status) {
+        is Ok -> status.value
+        is BadInput -> throw IllegalArgumentException(status.message)
+        is BadRequest -> throw IllegalStateException(status.message)
+        is NotFound -> throw NoSuchElementException(status.message)
+        is UnknownError -> throw RuntimeException(status.message)
+        else -> throw RuntimeException("unknown error")
+    }
 }

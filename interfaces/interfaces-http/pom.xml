@@ -19,6 +19,11 @@
             <artifactId>rest</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+            <artifactId>test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.karamelsoft.axon.demo.services.customers</groupId>
             <artifactId>customers-api</artifactId>
         </dependency>

@@ -22,5 +22,3 @@ Content-Type: application/json
 # @name = Get Customer Dashboard
 GET http://localhost:8081/service/interfaces/http/customers/95f6a678-84c3-4637-8cb6-b5db4366d166/dashboard
 Content-Type: application/json
-
-

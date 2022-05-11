@@ -1,16 +1,17 @@
 .PHONY=clean
 
 clean:
-	mvnd clean
+	mvn clean
 
 build:
-	mvnd compile test-compile -T 4C
+	mvn compile test-compile -T 4C
 
 container:
-	mvnd package -Pdocker
+	mvn package -Pdocker
+	$(MAKE) -C infrastructure build
 
 test:
-	mvnd test
+	mvn test
 
 swarm-deploy:
 	$(MAKE) -C infrastructure swarm-deploy

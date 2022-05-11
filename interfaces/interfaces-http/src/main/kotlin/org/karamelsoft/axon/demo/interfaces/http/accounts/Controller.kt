@@ -2,13 +2,12 @@ package org.karamelsoft.axon.demo.interfaces.http.accounts
 
 import org.axonframework.eventsourcing.eventstore.EventStore
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway
-import org.karamelsoft.axon.demo.interfaces.http.Event
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.DepositAmount
-import org.karamelsoft.axon.demo.services.accounts.api.RegisterNewAccount
 import org.karamelsoft.axon.demo.services.accounts.api.WithdrawAmount
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import org.karamelsoft.research.axon.libraries.service.module.readEvents
+import org.karamelsoft.research.axon.libraries.service.rest.handleStatus
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -20,20 +19,9 @@ class AccountController(
     private val eventStore: EventStore,
 ) {
 
-    @PutMapping("/{accountId}")
-    fun registerAccount(@PathVariable accountId: String, @RequestBody action: AccountRegistration): Mono<Status<Unit>> {
-        return commandGateway.send(
-            RegisterNewAccount(
-                accountId = AccountId(accountId),
-                owner = action.owner,
-                timestamp = action.timestamp
-            )
-        )
-    }
-
     @PostMapping("/{accountId}/deposit")
-    fun depositAmount(@PathVariable accountId: String, @RequestBody action: AmountDeposit): Mono<Status<Unit>> {
-        return commandGateway.send(
+    fun depositAmount(@PathVariable accountId: String, @RequestBody action: AmountDeposit): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
             DepositAmount(
                 accountId = AccountId(accountId),
                 amount = action.amount,
@@ -41,12 +29,12 @@ class AccountController(
                 description = action.description,
                 timestamp = action.timestamp
             )
-        )
+        ).handleStatus()
     }
 
     @PostMapping("/{accountId}/withdraw")
-    fun withdrawAmount(@PathVariable accountId: String, @RequestBody action: AmountWithdrawal): Mono<Status<Unit>> {
-        return commandGateway.send(
+    fun withdrawAmount(@PathVariable accountId: String, @RequestBody action: AmountWithdrawal): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
             WithdrawAmount(
                 accountId = AccountId(accountId),
                 amount = action.amount,
@@ -54,7 +42,7 @@ class AccountController(
                 description = action.description,
                 timestamp = action.timestamp
             )
-        )
+        ).handleStatus()
     }
 
     @GetMapping("/{accountId}/history")

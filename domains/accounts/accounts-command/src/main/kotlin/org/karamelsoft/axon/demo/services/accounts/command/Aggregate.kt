@@ -7,8 +7,10 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
+import org.karamelsoft.axon.demo.libraries.service.command.ConstraintStore
 import org.karamelsoft.axon.demo.services.accounts.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
+import java.time.Duration
 
 @Aggregate
 internal class Account {
@@ -21,7 +23,7 @@ internal class Account {
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewAccount): Status<Unit> = Status.of {
+    fun handle(command: RegisterNewAccount, constraintStore: ConstraintStore): Status<Unit> = Status.of<Unit> {
         AggregateLifecycle.apply(
             NewAccountRegistered(
                 accountId = command.accountId,
@@ -29,13 +31,6 @@ internal class Account {
                 timestamp = command.timestamp
             )
         )
-    }
-
-    @EventSourcingHandler
-    fun on(event: NewAccountRegistered) {
-        accountId = event.accountId
-        balance = 0.0
-        closed = false
     }
 
     @CommandHandler
@@ -48,12 +43,6 @@ internal class Account {
                 )
             )
         }
-
-
-    @EventSourcingHandler
-    fun on(event: AmountDeposited) {
-        balance += event.amount
-    }
 
     @CommandHandler
     fun handle(command: WithdrawAmount): Status<Unit> = when {
@@ -68,22 +57,33 @@ internal class Account {
         }
     }
 
-
-    @EventSourcingHandler
-    fun on(event: AmountWithdrew) {
-        balance -= event.amount
-    }
-
     @CommandHandler
-    fun handle(command: CloseAccount) =
+    fun handle(command: CloseAccount): Status<Unit> =
         if (closed) accountClosed()
-        else Status.of {
+        else Status.of<Unit> {
             AggregateLifecycle.apply(
                 AccountClosed(
                     accountId = accountId, timestamp = command.timestamp
                 )
             )
         }
+
+    @EventSourcingHandler
+    fun on(event: NewAccountRegistered) {
+        accountId = event.accountId
+        balance = 0.0
+        closed = false
+    }
+
+    @EventSourcingHandler
+    fun on(event: AmountDeposited) {
+        balance += event.amount
+    }
+
+    @EventSourcingHandler
+    fun on(event: AmountWithdrew) {
+        balance -= event.amount
+    }
 
     @EventSourcingHandler
     fun on(event: AccountClosed) {

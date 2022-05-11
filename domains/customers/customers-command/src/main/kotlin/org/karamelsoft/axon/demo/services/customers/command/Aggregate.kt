@@ -36,7 +36,7 @@ internal class Customer {
     }
 
     @CommandHandler
-    fun handle(command: CorrectCustomerDetails) = Status.of {
+    fun handle(command: CorrectCustomerDetails): Status<Unit> = Status.of {
         AggregateLifecycle.apply(
             CustomerDetailsCorrected(
                 customerId = customerId,
@@ -47,7 +47,7 @@ internal class Customer {
     }
 
     @CommandHandler
-    fun handle(command: CorrectCustomerAddress) = Status.of {
+    fun handle(command: CorrectCustomerAddress): Status<Unit> = Status.of {
         AggregateLifecycle.apply(
             CustomerAddressCorrected(
                 customerId = customerId,
