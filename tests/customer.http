@@ -1,5 +1,6 @@
 ###
 # @name = Register Customer
+#PUT http://localhost:8080/customers/95f6a678-84c3-4637-8cb6-b5db4366d166
 PUT http://localhost:8081/service/interfaces/http/customers/95f6a678-84c3-4637-8cb6-b5db4366d166
 Content-Type: application/json
 

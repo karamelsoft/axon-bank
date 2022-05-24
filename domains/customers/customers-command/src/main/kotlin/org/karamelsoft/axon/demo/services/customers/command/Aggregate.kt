@@ -7,6 +7,7 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
+import org.karamelsoft.axon.demo.libraries.service.command.ConstraintStore
 import org.karamelsoft.axon.demo.services.customers.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 
@@ -18,17 +19,18 @@ internal class Customer {
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewCustomer): Status<CustomerId> = Status.of {
-        AggregateLifecycle.apply(
-            NewCustomerRegistered(
-                customerId = command.customerId,
-                details = command.details,
-                address = command.address,
-                timestamp = command.timestamp
+    fun handle(command: RegisterNewCustomer, constraintStore: ConstraintStore): Status<CustomerId> =
+        Status.of {
+            AggregateLifecycle.apply(
+                NewCustomerRegistered(
+                    customerId = command.customerId,
+                    details = command.details,
+                    address = command.address,
+                    timestamp = command.timestamp
+                )
             )
-        )
-        command.customerId
-    }
+            command.customerId
+        }
 
     @EventSourcingHandler
     fun on(event: NewCustomerRegistered) {

@@ -19,6 +19,10 @@
             <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
             <artifactId>api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

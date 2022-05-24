@@ -7,7 +7,6 @@ import org.axonframework.serialization.json.JacksonSerializer
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.time.Duration
 import java.time.Instant
 import java.util.*
 
@@ -38,11 +37,10 @@ internal class ConstraintTest {
     fun `claiming a constraint should return ok status`() {
         val constraintId = UUID.randomUUID().toString()
         val now = Instant.now()
-        val duration = Duration.ofMinutes(5)
 
         fixture.given()
-            .`when`(serialize(ClaimConstraint(constraintId, duration, now)))
-            .expectEvents(serialize(ConstraintClaimed(constraintId, duration, now)))
+            .`when`(serialize(ClaimConstraint(constraintId, now)))
+            .expectEvents(serialize(ConstraintClaimed(constraintId, now)))
     }
 
     @Test

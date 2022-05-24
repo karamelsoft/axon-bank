@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = org.karamelsoft.research.axon.libraries.service.rest.RestAutoConfiguration

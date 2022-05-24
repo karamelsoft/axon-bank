@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
-            <artifactId>rest</artifactId>
+            <artifactId>interface</artifactId>
         </dependency>
         <dependency>
             <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>

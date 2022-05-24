@@ -8,13 +8,12 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.research.axon.libraries.service.api.BadRequest
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import org.springframework.stereotype.Component
-import java.time.Duration
 import java.time.Instant
 
 @Component
 class AggregateConstraintStore(val commandGateway: CommandGateway) : ConstraintStore {
-    override fun claimConstraint(id: String, duration: Duration) =
-        commandGateway.sendAndWait<Status<Unit>>(ClaimConstraint(id, duration))
+    override fun claimConstraint(id: String) =
+        commandGateway.sendAndWait<Status<Unit>>(ClaimConstraint(id))
 
     override fun validateConstraint(id: String) =
         commandGateway.sendAndWait<Status<Unit>>(ValidateConstraint(id))
@@ -24,31 +23,31 @@ class AggregateConstraintStore(val commandGateway: CommandGateway) : ConstraintS
 }
 
 @Aggregate
-internal class Constraint() {
+internal class Constraint {
 
     @AggregateIdentifier
     private lateinit var id: String
 
-    private var claimedUntil: Instant? = null
+    private var claimed: Boolean = false
     private var validated: Boolean = false
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: ClaimConstraint) = Status.of {
-        AggregateLifecycle.apply(
-            ConstraintClaimed(
-                id = command.id,
-                duration = command.duration,
-                timestamp = command.timestamp
+    fun handle(command: ClaimConstraint) = when {
+        claimed -> alreadyClaimed()
+        else -> Status.of {
+            AggregateLifecycle.apply(
+                ConstraintClaimed(
+                    id = command.id,
+                    timestamp = command.timestamp
+                )
             )
-        )
+        }
     }
 
     @CommandHandler
-    @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
     fun handle(command: ValidateConstraint) = when {
         validated -> alreadyValidated()
-        claimedUntil?.isAfter(Instant.now()) ?: false -> alreadyClaimed()
         else -> Status.of {
             AggregateLifecycle.apply(
                 ConstraintValidated(
@@ -60,7 +59,6 @@ internal class Constraint() {
     }
 
     @CommandHandler
-    @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
     fun handle(command: ReleaseConstraint) = Status.of {
         AggregateLifecycle.apply(
             ConstraintReleased(
@@ -73,21 +71,19 @@ internal class Constraint() {
     @EventSourcingHandler
     fun on(event: ConstraintClaimed) {
         id = event.id
-        claimedUntil = Instant.now().plus(event.duration)
+        claimed = true
         validated = false
     }
 
     @EventSourcingHandler
     fun on(event: ConstraintValidated) {
-        id = event.id
-        claimedUntil = null
+        claimed = false
         validated = true
     }
 
     @EventSourcingHandler
     fun on(event: ConstraintReleased) {
-        id = event.id
-        claimedUntil = null
+        claimed = false
         validated = false
     }
 }
@@ -102,7 +98,6 @@ interface ConstraintCommand {
 
 data class ClaimConstraint(
     @TargetAggregateIdentifier override val id: String,
-    val duration: Duration,
     override val timestamp: Instant = Instant.now()
 ) : ConstraintCommand
 
@@ -123,12 +118,15 @@ interface ConstraintEvent {
 
 data class ConstraintClaimed(
     override val id: String,
-    val duration: Duration,
     override val timestamp: Instant = Instant.now()
 ) : ConstraintEvent
 
-data class ConstraintValidated(override val id: String, override val timestamp: Instant = Instant.now()) :
-    ConstraintEvent
+data class ConstraintValidated(
+    override val id: String,
+    override val timestamp: Instant = Instant.now(),
+) : ConstraintEvent
 
-data class ConstraintReleased(override val id: String, override val timestamp: Instant = Instant.now()) :
-    ConstraintEvent
+data class ConstraintReleased(
+    override val id: String,
+    override val timestamp: Instant = Instant.now()
+) : ConstraintEvent

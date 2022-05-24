@@ -19,9 +19,9 @@
         <module>api</module>
         <module>command</module>
         <module>command-test</module>
+        <module>interface</module>
         <module>module</module>
         <module>orchestrator</module>
-        <module>rest</module>
         <module>test</module>
         <module>view</module>
     </modules>

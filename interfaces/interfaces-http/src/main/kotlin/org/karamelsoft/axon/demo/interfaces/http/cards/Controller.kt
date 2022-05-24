@@ -6,7 +6,7 @@ import org.karamelsoft.axon.demo.interfaces.http.Event
 import org.karamelsoft.axon.demo.services.cards.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import org.karamelsoft.research.axon.libraries.service.module.readEvents
-import org.karamelsoft.research.axon.libraries.service.rest.handleStatus
+import org.karamelsoft.axon.demo.interfaces.http.handleStatus
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

@@ -89,7 +89,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
-				<artifactId>rest</artifactId>
+				<artifactId>interface</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
