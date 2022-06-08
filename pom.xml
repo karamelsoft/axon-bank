@@ -123,6 +123,11 @@
 				<artifactId>customer-dashboard-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.karamelsoft.axon.demo.orchestrators.payment</groupId>
+				<artifactId>payment-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>

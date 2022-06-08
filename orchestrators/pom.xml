@@ -17,6 +17,7 @@
     <modules>
         <module>account-registration</module>
         <module>customer-registration</module>
+        <module>payment</module>
     </modules>
 
 </project>

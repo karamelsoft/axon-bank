@@ -14,17 +14,20 @@ import java.time.LocalDate
 
 const val MAX_WRONG_ATTEMPTS = 3
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "cardSnapshotter")
 internal class Card {
 
     @AggregateIdentifier
     private lateinit var cardId: CardId
-    private var validity: CardValidity? = null
+    private lateinit var owner: CardOwner
+    private lateinit var account: CardAccount
+    private lateinit var validity: CardValidity
+
     private var pinCode: CardPinCode? = null
     private var blocked: Boolean = false
     private var wrongAttempts: Int = 0
 
-    private fun notValidAnymore() = validity!!.isBefore(LocalDate.now())
+    private fun notValidAnymore() = validity.isBefore(LocalDate.now())
     private fun pinInvalid(pin: CardPinCode) = !(pinCode!!.validatePin(pin))
 
     @CommandHandler
@@ -44,6 +47,8 @@ internal class Card {
     @EventSourcingHandler
     fun on(event: NewCardRegistered) {
         cardId = event.cardId
+        owner = event.owner
+        account = event.account
         validity = event.validity
     }
 
@@ -108,16 +113,20 @@ internal class Card {
     }
 
     @CommandHandler
-    fun handle(command: ValidateCardPinCode): Status<Unit> = when {
+    fun handle(command: UseCard): Status<CardAssignments> = when {
         notValidAnymore() -> cardInvalid()
         blocked -> cardBlocked()
         pinCode == null -> undefinedCardPinCode()
         pinInvalid(command.pinCode) -> rejectPinCode(command.timestamp)
-        else -> Status.of<Unit> {
+        else -> Status.of<CardAssignments> {
             AggregateLifecycle.apply(CardPinCodeValidated(
                 cardId = cardId,
                 timestamp = command.timestamp
             ))
+            CardAssignments(
+                owner = owner,
+                account = account
+            )
         }
     }
 
@@ -131,7 +140,7 @@ internal class Card {
         wrongAttempts = 0
     }
 
-    fun rejectPinCode(timestamp: Instant = Instant.now()): Status<Unit> {
+    fun <S> rejectPinCode(timestamp: Instant = Instant.now()): Status<S> {
         AggregateLifecycle.apply(CardPinCodeValidationFailed(
             cardId = cardId,
             timestamp = timestamp

@@ -34,7 +34,7 @@ data class ChangeCardPinCode(
     override val timestamp: Instant = Instant.now()
 ): CardCommand
 
-data class ValidateCardPinCode(
+data class UseCard(
     @TargetAggregateIdentifier override val cardId: CardId,
     val pinCode: CardPinCode,
     override val timestamp: Instant = Instant.now()

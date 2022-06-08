@@ -25,6 +25,11 @@ fun generate(): String {
 data class CardAccount(val reference: String)
 data class CardOwner(val reference: String)
 
+data class CardAssignments(
+    val owner: CardOwner,
+    val account: CardAccount
+)
+
 fun currentMonth(): Month = LocalDate.now().month
 fun currentYear(): Year = Year.now()
 

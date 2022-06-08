@@ -1,13 +1,15 @@
 package org.karamelsoft.axon.demo.interfaces.http.customers
 
-import org.axonframework.eventsourcing.eventstore.EventStore
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway
 import org.axonframework.extensions.reactor.queryhandling.gateway.ReactorQueryGateway
+import org.karamelsoft.axon.demo.interfaces.http.handleStatus
+import org.karamelsoft.axon.demo.services.customers.api.CorrectCustomerAddress
+import org.karamelsoft.axon.demo.services.customers.api.CorrectCustomerDetails
+import org.karamelsoft.axon.demo.services.customers.api.CustomerId
+import org.karamelsoft.axon.demo.services.customers.api.RegisterNewCustomer
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.CustomerDashboardResponse
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.GetCustomerDashboard
 import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.axon.demo.interfaces.http.handleStatus
-import org.karamelsoft.axon.demo.services.customers.api.*
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
@@ -15,14 +17,13 @@ import reactor.core.publisher.Mono
 @RequestMapping("/customers")
 class CustomerController(
     val commandGateway: ReactorCommandGateway,
-    val queryGateway: ReactorQueryGateway,
-    val eventStore: EventStore
+    val queryGateway: ReactorQueryGateway
 ) {
 
     @PostMapping()
     fun registerCustomerWithoutId(@RequestBody action: CustomerRegistration): Mono<CustomerId> {
         return commandGateway.send<Status<CustomerId>>(
-            RegisterUniqueCustomer(
+            RegisterNewCustomer(
                 customerId = CustomerId(),
                 details = action.details,
                 address = action.address,
@@ -37,7 +38,7 @@ class CustomerController(
         @RequestBody action: CustomerRegistration
     ): Mono<Unit> {
         return commandGateway.send<Status<Unit>>(
-            RegisterUniqueCustomer(
+            RegisterNewCustomer(
                 customerId = CustomerId.of(customerId),
                 details = action.details,
                 address = action.address,

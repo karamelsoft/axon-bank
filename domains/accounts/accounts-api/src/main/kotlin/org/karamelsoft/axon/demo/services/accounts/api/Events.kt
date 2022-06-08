@@ -16,16 +16,21 @@ data class NewAccountRegistered(
 data class AmountDeposited(
     override val accountId: AccountId,
     val amount: Double,
+    val from: String,
+    val description: String? = null,
     override val timestamp: Instant = Instant.now()
 ): AccountEvent
 
 data class AmountWithdrew(
     override val accountId: AccountId,
     val amount: Double,
+    val to: String,
+    val description: String? = null,
     override val timestamp: Instant = Instant.now()
 ): AccountEvent
 
 data class AccountClosed(
     override val accountId: AccountId,
+    val description: String? = null,
     override val timestamp: Instant = Instant.now()
 ): AccountEvent

@@ -7,6 +7,8 @@ import org.karamelsoft.axon.demo.services.cards.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import org.karamelsoft.research.axon.libraries.service.module.readEvents
 import org.karamelsoft.axon.demo.interfaces.http.handleStatus
+import org.karamelsoft.axon.demo.orchestrators.payment.api.PayByCard
+import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -56,9 +58,9 @@ class CardController(
     fun validateCardPinCode(
         @PathVariable("card_id") cardId: String,
         @RequestBody action: CardPinValidation
-    ): Mono<Unit> {
-        return commandGateway.send<Status<Unit>>(
-            ValidateCardPinCode(
+    ): Mono<CardAssignments> {
+        return commandGateway.send<Status<CardAssignments>>(
+            UseCard(
                 cardId = CardId(cardId),
                 pinCode = CardPinCode.of(action.currentPinCode),
                 timestamp = action.timestamp
@@ -66,5 +68,20 @@ class CardController(
         ).handleStatus()
     }
 
-
+    @PostMapping("/{card_id}/payment")
+    fun payByCard(
+        @PathVariable("card_id") cardId: String,
+        @RequestBody action: CardPayment
+    ): Mono<Unit> {
+        return commandGateway.send<Status<Unit>>(
+            PayByCard(
+                cardId = CardId(cardId),
+                pinCode = CardPinCode.of(action.pinCode),
+                destination = AccountId(action.destination),
+                amount = action.amount,
+                description = action.description,
+                timestamp = action.timestamp
+            )
+        ).handleStatus()
+    }
 }

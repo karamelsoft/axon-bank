@@ -1,10 +1,15 @@
 package org.karamelsoft.research.axon.libraries.service.api
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.slf4j.LoggerFactory
 import reactor.core.publisher.Mono
 
 sealed interface Status<T> {
     companion object {
+        fun <T> ok(provider: () -> T) = Ok(provider())
         fun <T> of(operation: () -> T) = try {
             Ok(operation())
         } catch (e: Exception) {
@@ -34,6 +39,8 @@ interface Success<T> : Status<T> {
     val value: T
 }
 
+@JsonSerialize(using = OkSerializer::class)
+@JsonDeserialize(using = OkDeserializer::class)
 data class Ok<T>(override val value: T) : Success<T> {
     override fun <U> andThen(next: (T) -> Status<U>) = next(value)
 
@@ -89,4 +96,8 @@ data class UnknownError<T>(val exception: Exception, override val message: Strin
     Error<T>(message) {
     override fun <U> orCastTo() = UnknownError<U>(exception)
     override fun toException() = exception
+}
+
+fun <I, O> Mono<Status<I>>.andThen(function: (I) -> Mono<Status<O>>): Mono<Status<O>> {
+    return this.flatMap { status -> status.andThenMono(function) }
 }

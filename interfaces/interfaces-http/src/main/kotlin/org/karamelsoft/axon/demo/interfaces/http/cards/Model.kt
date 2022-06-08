@@ -1,6 +1,5 @@
 package org.karamelsoft.axon.demo.interfaces.http.cards
 
-import org.karamelsoft.axon.demo.services.cards.api.CardPinCode
 import java.time.Instant
 
 interface CardAction {
@@ -21,4 +20,12 @@ data class CardPinChange(
 data class CardPinValidation(
     val currentPinCode: String,
     override val timestamp: Instant = Instant.now()
+): CardAction
+
+data class CardPayment(
+    val pinCode: String,
+    val amount: Double,
+    val destination: String,
+    val description: String? = null,
+    override val timestamp: Instant = Instant.now(),
 ): CardAction

@@ -7,12 +7,11 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
-import org.karamelsoft.axon.demo.libraries.service.command.ConstraintStore
 import org.karamelsoft.axon.demo.services.accounts.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import java.time.Duration
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "accountSnapshotter")
 internal class Account {
 
     @AggregateIdentifier
@@ -23,7 +22,7 @@ internal class Account {
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewAccount, constraintStore: ConstraintStore): Status<Unit> = Status.of<Unit> {
+    fun handle(command: RegisterNewAccount): Status<Unit> = Status.of<Unit> {
         AggregateLifecycle.apply(
             NewAccountRegistered(
                 accountId = command.accountId,
@@ -39,7 +38,11 @@ internal class Account {
         else Status.of<Unit> {
             AggregateLifecycle.apply(
                 AmountDeposited(
-                    accountId = accountId, amount = command.amount, timestamp = command.timestamp
+                    accountId = accountId,
+                    amount = command.amount,
+                    from = command.from,
+                    description = command.description,
+                    timestamp = command.timestamp,
                 )
             )
         }
@@ -51,7 +54,11 @@ internal class Account {
         else -> Status.of<Unit> {
             AggregateLifecycle.apply(
                 AmountWithdrew(
-                    accountId = accountId, amount = command.amount, timestamp = command.timestamp
+                    accountId = accountId,
+                    amount = command.amount,
+                    to = command.to,
+                    description = command.description,
+                    timestamp = command.timestamp,
                 )
             )
         }
@@ -63,7 +70,8 @@ internal class Account {
         else Status.of<Unit> {
             AggregateLifecycle.apply(
                 AccountClosed(
-                    accountId = accountId, timestamp = command.timestamp
+                    accountId = accountId,
+                    timestamp = command.timestamp
                 )
             )
         }

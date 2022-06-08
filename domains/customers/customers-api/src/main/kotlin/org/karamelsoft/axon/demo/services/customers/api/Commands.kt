@@ -25,11 +25,10 @@ fun customerConstraint(details: CustomerDetails, address: CustomerAddress): Stri
 }
 
 data class RegisterUniqueCustomer(
-    val customerId: CustomerId,
+    @RoutingKey val customerId: CustomerId,
     val details: CustomerDetails,
     val address: CustomerAddress,
-    val timestamp: Instant = Instant.now(),
-    @RoutingKey val routingKey: String = UNIQUE_REGISTRATION_ROUTING_KEY,
+    val timestamp: Instant = Instant.now()
 )
 
 data class RegisterNewCustomer(

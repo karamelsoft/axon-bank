@@ -1,10 +1,13 @@
 package org.karamelsoft.axon.demo.services.cards.command
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.karamelsoft.axon.demo.libraries.service.command.test.AggregateTest
 import org.karamelsoft.axon.demo.libraries.service.test.serialize
 import org.karamelsoft.axon.demo.services.cards.api.*
 import org.karamelsoft.research.axon.libraries.service.api.BadRequest
+import org.karamelsoft.research.axon.libraries.service.api.Status
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -123,78 +126,79 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     }
 
     @Test
-    fun `validate pin code`() {
+    fun `use card`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeChanged(cardId, newPinCode, now.plus(2, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, newPinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, newPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
+            .expectResultMessagePayload(Status.of { CardAssignments(owner, account) })
             .expectEvents(CardPinCodeValidated(cardId, now.plus(3, ChronoUnit.DAYS)))
     }
 
     @Test
-    fun `validate pin code with wrong pin code`() {
+    fun `use card with wrong pin code`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectEvents(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .expectResultMessagePayload(BadRequest<Unit>("wrong card pin code"))
+            .expectResultMessagePayload(BadRequest<CardAssignments>("wrong card pin code"))
     }
 
     @Test
-    fun `validate pin code with good pin code after 2 failures`() {
+    fun `use card with good pin code after 2 failures`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, pinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, pinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
+            .expectResultMessagePayload(Status.of { CardAssignments(owner, account) })
             .expectEvents(CardPinCodeValidated(cardId, now.plus(3, ChronoUnit.DAYS)))
     }
 
     @Test
-    fun `validate pin code with wrong pin code after 2 failures and 1 success`() {
+    fun `use card with wrong pin code after 2 failures and 1 success`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidated(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectEvents(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .expectResultMessagePayload(BadRequest<Unit>("wrong card pin code"))
+            .expectResultMessagePayload(BadRequest<CardAssignments>("wrong card pin code"))
     }
 
     @Test
-    fun `validate pin code with wrong pin code after 2 failures`() {
+    fun `use card with wrong pin code after 2 failures`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectEvents(
                 CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)),
                 CardBlocked(cardId, now.plus(3, ChronoUnit.DAYS))
             )
-            .expectResultMessagePayload(BadRequest<Unit>("wrong card pin code"))
+            .expectResultMessagePayload(BadRequest<CardAssignments>("wrong card pin code"))
     }
 
     @Test
-    fun `validate pin code after card blocked`() {
+    fun `use card after card blocked`() {
         aggregate
             .given(NewCardRegistered(cardId, validity, account, owner, now))
             .andGiven(CardBlocked(cardId, now.plus(3, ChronoUnit.DAYS)))
-            .`when`(ValidateCardPinCode(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
+            .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectNoEvents()
-            .expectResultMessagePayload(BadRequest<Unit>("card blocked"))
+            .expectResultMessagePayload(BadRequest<CardAssignments>("card blocked"))
     }
-
 }
