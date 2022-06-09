@@ -8,7 +8,7 @@ import org.axonframework.modelling.saga.StartSaga
 import org.axonframework.spring.stereotype.Saga
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.AccountOwner
-import org.karamelsoft.axon.demo.services.accounts.api.NewAccountRegistered
+import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
 import org.karamelsoft.axon.demo.services.cards.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 import org.slf4j.Logger
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 @Saga
 class AccountRegistrationProcess {
 
+    @Transient
     private val logger: Logger = LoggerFactory.getLogger(AccountRegistrationProcess::class.java)
 
     @Autowired
@@ -29,7 +30,7 @@ class AccountRegistrationProcess {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "accountId")
-    fun handle(event: NewAccountRegistered) {
+    fun handle(event: NewAccountOpened) {
         logger.info("New account registration should create a card")
         accountId = event.accountId
         accountOwner = event.owner

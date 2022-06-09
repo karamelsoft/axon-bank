@@ -25,7 +25,7 @@ class AccountController(
             DepositAmount(
                 accountId = AccountId(accountId),
                 amount = action.amount,
-                from = action.from,
+                from = AccountId(action.from),
                 description = action.description,
                 timestamp = action.timestamp
             )
@@ -38,7 +38,7 @@ class AccountController(
             WithdrawAmount(
                 accountId = AccountId(accountId),
                 amount = action.amount,
-                to = action.to,
+                to = AccountId(action.to),
                 description = action.description,
                 timestamp = action.timestamp
             )

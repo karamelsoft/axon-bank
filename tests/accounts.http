@@ -1,17 +1,17 @@
 ###
 # @name = Deposit Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE28805667626610/deposit
+POST http://localhost:8081/service/interfaces/http/accounts/BE78224215051834/deposit
 Content-Type: application/json
 
 {
   "amount": 28.43,
-  "from": "Robert",
+  "from": "BE12345678901234",
   "description": "For the drinks at the bar"
 }
 
 ###
 # @name = Withdraw Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE28805667626610/withdraw
+POST http://localhost:8081/service/interfaces/http/accounts/BE78224215051834/withdraw
 Content-Type: application/json
 
 {
@@ -22,10 +22,10 @@ Content-Type: application/json
 
 ###
 # @name = Get Account History
-GET http://localhost:8081/service/interfaces/http/accounts/BE28805667626610/history
+GET http://localhost:8081/service/interfaces/http/accounts/BE78224215051834/history
 Content-Type: application/json
 
 ###
 # @name = Get Account History
-GET http://localhost:8081/service/interfaces/http/accounts/BE89032956910325/history
+GET http://localhost:8081/service/interfaces/http/accounts/BE64938403337162/history
 Content-Type: application/json

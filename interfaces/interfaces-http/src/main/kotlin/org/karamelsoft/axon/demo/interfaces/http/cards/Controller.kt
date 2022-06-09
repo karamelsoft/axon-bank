@@ -77,7 +77,7 @@ class CardController(
             PayByCard(
                 cardId = CardId(cardId),
                 pinCode = CardPinCode.of(action.pinCode),
-                destination = AccountId(action.destination),
+                to = AccountId(action.destination),
                 amount = action.amount,
                 description = action.description,
                 timestamp = action.timestamp

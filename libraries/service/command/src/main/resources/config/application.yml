@@ -31,6 +31,14 @@ spring:
   config:
     activate:
       on-profile: swarm
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      username: root
+      password: r00t
+      database: axondemo
+      authentication-database: admin
 
 axon:
   axonserver:

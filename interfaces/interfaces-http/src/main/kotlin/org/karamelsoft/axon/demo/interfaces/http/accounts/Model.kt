@@ -49,7 +49,7 @@ data class AccountState(
 
     fun handle(event: Any): AccountState = when (event) {
         is Event -> handle(event.payload)
-        is NewAccountRegistered -> empty()
+        is NewAccountOpened -> empty()
         is AmountDeposited -> deposited(event.amount)
         is AmountWithdrew -> withdrew(event.amount)
         is AccountClosed -> closed()

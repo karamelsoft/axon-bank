@@ -8,8 +8,8 @@ import org.axonframework.modelling.saga.StartSaga
 import org.axonframework.spring.stereotype.Saga
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.AccountOwner
-import org.karamelsoft.axon.demo.services.accounts.api.NewAccountRegistered
-import org.karamelsoft.axon.demo.services.accounts.api.RegisterNewAccount
+import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
+import org.karamelsoft.axon.demo.services.accounts.api.OpenNewAccount
 import org.karamelsoft.axon.demo.services.customers.api.CustomerId
 import org.karamelsoft.axon.demo.services.customers.api.NewCustomerRegistered
 import org.karamelsoft.research.axon.libraries.service.api.Status
@@ -36,7 +36,7 @@ class CustomerRegistrationProcess {
         customerId = event.customerId
         accountId = AccountId()
         SagaLifecycle.associateWith("accountId", accountId.toString())
-        commandGateway.send<Status<Unit>>(RegisterNewAccount(
+        commandGateway.send<Status<Unit>>(OpenNewAccount(
             accountId = accountId,
             owner = AccountOwner(customerId.asReference())
         )).block()
@@ -44,7 +44,7 @@ class CustomerRegistrationProcess {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "accountId")
-    fun handle(event: NewAccountRegistered) {
+    fun handle(event: NewAccountOpened) {
         logger.info("Account created")
     }
 }

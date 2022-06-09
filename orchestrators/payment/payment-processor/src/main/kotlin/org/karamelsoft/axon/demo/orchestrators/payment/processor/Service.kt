@@ -4,7 +4,7 @@ import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway
 import org.karamelsoft.axon.demo.orchestrators.payment.api.PayByCard
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
-import org.karamelsoft.axon.demo.services.accounts.api.TransferAmount
+import org.karamelsoft.axon.demo.services.accounts.api.WithdrawAmount
 import org.karamelsoft.axon.demo.services.cards.api.CardAssignments
 import org.karamelsoft.axon.demo.services.cards.api.UseCard
 import org.karamelsoft.research.axon.libraries.service.api.Status
@@ -12,7 +12,7 @@ import org.karamelsoft.research.axon.libraries.service.api.andThen
 import org.springframework.stereotype.Component
 
 @Component
-class PaymentByCardProcess(val commandGateway: ReactorCommandGateway) {
+class PaymentService(val commandGateway: ReactorCommandGateway) {
 
     @CommandHandler
     fun handle(command: PayByCard): Status<Unit> {
@@ -21,15 +21,16 @@ class PaymentByCardProcess(val commandGateway: ReactorCommandGateway) {
             pinCode = command.pinCode
         )
 
-        fun transferAmount(cardAssignments: CardAssignments) = TransferAmount(
-            from = AccountId(number = cardAssignments.account.reference),
-            to = command.destination,
+        fun withdrawAmount(cardAssignments: CardAssignments) = WithdrawAmount(
+            accountId = AccountId(cardAssignments.account.reference),
             amount = command.amount,
-            description = command.description
+            to = command.to,
+            description = command.description,
+            operationId = command.operationId
         )
 
         return commandGateway.send<Status<CardAssignments>>(useCard())
-            .andThen { commandGateway.send<Status<Unit>>(transferAmount(it)) }
+            .andThen { commandGateway.send<Status<Unit>>(withdrawAmount(it)) }
             .block()!!
     }
 }

@@ -9,7 +9,6 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.demo.services.accounts.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
-import java.time.Duration
 
 @Aggregate(snapshotTriggerDefinition = "accountSnapshotter")
 internal class Account {
@@ -22,9 +21,9 @@ internal class Account {
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewAccount): Status<Unit> = Status.of<Unit> {
+    fun handle(command: OpenNewAccount): Status<Unit> = Status.of<Unit> {
         AggregateLifecycle.apply(
-            NewAccountRegistered(
+            NewAccountOpened(
                 accountId = command.accountId,
                 owner = command.owner,
                 timestamp = command.timestamp
@@ -77,7 +76,7 @@ internal class Account {
         }
 
     @EventSourcingHandler
-    fun on(event: NewAccountRegistered) {
+    fun on(event: NewAccountOpened) {
         accountId = event.accountId
         balance = 0.0
         closed = false
