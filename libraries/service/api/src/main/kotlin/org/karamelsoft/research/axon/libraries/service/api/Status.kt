@@ -1,7 +1,5 @@
 package org.karamelsoft.research.axon.libraries.service.api
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.slf4j.LoggerFactory
@@ -31,8 +29,8 @@ sealed interface Status<T> {
     fun <U> map(mapping: (T) -> U, or: () -> U): U
     fun <U> andThen(next: (T) -> Status<U>): Status<U>
     fun <U> andThenMono(next: (T) -> Mono<Status<U>>): Mono<Status<U>>
-
     fun orThen(operation: () -> Status<T>): Status<T>
+    fun orThenMono(operation: () -> Mono<Status<T>>): Mono<Status<T>>
 }
 
 interface Success<T> : Status<T> {
@@ -49,6 +47,8 @@ data class Ok<T>(override val value: T) : Success<T> {
     override fun <U> map(mapping: (T) -> U, or: () -> U) = mapping(value)
 
     override fun orThen(operation: () -> Status<T>) = this
+
+    override fun orThenMono(operation: () -> Mono<Status<T>>): Mono<Status<T>> = Mono.just(this)
 
     override fun peek(onSuccess: (T) -> Any, onFailure: () -> Any): Status<T> {
         onSuccess(value)
@@ -67,6 +67,8 @@ sealed class Error<T>(open val message: String) : Status<T> {
     abstract fun <U> orCastTo(): Status<U>
 
     override fun orThen(operation: () -> Status<T>) = operation()
+
+    override fun orThenMono(operation: () -> Mono<Status<T>>) = operation()
 
     override fun peek(onSuccess: (T) -> Any, onFailure: () -> Any): Status<T> {
         onFailure()
@@ -98,6 +100,10 @@ data class UnknownError<T>(val exception: Exception, override val message: Strin
     override fun toException() = exception
 }
 
-fun <I, O> Mono<Status<I>>.andThen(function: (I) -> Mono<Status<O>>): Mono<Status<O>> {
+fun <I, O> Mono<Status<I>>.andThen(function: (I) -> Status<O>): Mono<Status<O>> {
+    return this.map { status -> status.andThen(function) }
+}
+
+fun <I, O> Mono<Status<I>>.andThenMono(function: (I) -> Mono<Status<O>>): Mono<Status<O>> {
     return this.flatMap { status -> status.andThenMono(function) }
 }

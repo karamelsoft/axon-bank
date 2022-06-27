@@ -3,12 +3,12 @@ package org.karamelsoft.axon.demo.interfaces.http.cards
 import org.axonframework.eventsourcing.eventstore.EventStore
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway
 import org.karamelsoft.axon.demo.interfaces.http.Event
-import org.karamelsoft.axon.demo.services.cards.api.*
-import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.research.axon.libraries.service.module.readEvents
 import org.karamelsoft.axon.demo.interfaces.http.handleStatus
 import org.karamelsoft.axon.demo.orchestrators.payment.api.PayByCard
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
+import org.karamelsoft.axon.demo.services.cards.api.*
+import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.service.module.readEvents
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -23,12 +23,6 @@ class CardController(
     @PostMapping("/{card_id}/block")
     fun blockCard(@PathVariable("card_id") cardId: String): Mono<Unit> {
         return commandGateway.send<Status<Unit>>(BlockCard(CardId(cardId))).handleStatus()
-    }
-
-    @GetMapping("/{card_id}/history")
-    fun getHistory(@PathVariable("card_id") cardId: String): Flux<Event> {
-        return eventStore.readEvents(CardId(cardId))
-            .map { domainEvent -> Event.from(domainEvent.payload) }
     }
 
     @PutMapping("/{card_id}/pin/setup")
@@ -84,4 +78,11 @@ class CardController(
             )
         ).handleStatus()
     }
+
+    @GetMapping("/{card_id}/history")
+    fun getHistory(@PathVariable("card_id") cardId: String): Flux<Event> {
+        return eventStore.readEvents(CardId(cardId))
+            .map { domainEvent -> Event.from(domainEvent.payload) }
+    }
+
 }

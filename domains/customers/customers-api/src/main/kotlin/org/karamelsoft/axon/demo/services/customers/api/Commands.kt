@@ -6,8 +6,6 @@ import org.axonframework.commandhandling.RoutingKey
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.time.Instant
 
-const val UNIQUE_REGISTRATION_ROUTING_KEY = "uniqueCustomer"
-
 private val hashFunction: HashFunction = Hashing.sha512()
 private val defaultCharset = Charsets.UTF_8
 

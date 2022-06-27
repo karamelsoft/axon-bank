@@ -14,33 +14,32 @@ import org.karamelsoft.research.axon.libraries.service.api.Status
 internal class Customer {
 
     @AggregateIdentifier
-    private lateinit var customerId: CustomerId
+    private lateinit var id: CustomerId
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewCustomer): Status<CustomerId> =
-        Status.of {
-            AggregateLifecycle.apply(
-                NewCustomerRegistered(
-                    customerId = command.customerId,
-                    details = command.details,
-                    address = command.address,
-                    timestamp = command.timestamp
-                )
+    fun handle(command: RegisterNewCustomer): Status<CustomerId> = Status.of {
+        AggregateLifecycle.apply(
+            NewCustomerRegistered(
+                customerId = command.customerId,
+                details = command.details,
+                address = command.address,
+                timestamp = command.timestamp
             )
-            command.customerId
-        }
+        )
+        command.customerId
+    }
 
     @EventSourcingHandler
     fun on(event: NewCustomerRegistered) {
-        customerId = event.customerId
+        id = event.customerId
     }
 
     @CommandHandler
-    fun handle(command: CorrectCustomerDetails): Status<Unit> = Status.of {
+    fun handle(command: CorrectCustomerDetails): Status<Unit> = Status.of<Unit> {
         AggregateLifecycle.apply(
             CustomerDetailsCorrected(
-                customerId = customerId,
+                customerId = id,
                 newDetails = command.newDetails,
                 timestamp = command.timestamp
             )
@@ -51,7 +50,7 @@ internal class Customer {
     fun handle(command: CorrectCustomerAddress): Status<Unit> = Status.of {
         AggregateLifecycle.apply(
             CustomerAddressCorrected(
-                customerId = customerId,
+                customerId = id,
                 newAddress = command.newAddress,
                 timestamp = command.timestamp
             )

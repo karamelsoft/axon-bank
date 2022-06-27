@@ -1,7 +1,6 @@
 package org.karamelsoft.axon.demo.interfaces.http
 
 import org.karamelsoft.research.axon.libraries.service.api.*
-import org.karamelsoft.research.axon.libraries.service.api.UnknownError
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler

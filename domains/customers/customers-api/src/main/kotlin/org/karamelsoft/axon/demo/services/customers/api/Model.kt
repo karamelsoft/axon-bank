@@ -1,7 +1,7 @@
 package org.karamelsoft.axon.demo.services.customers.api
 
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 data class CustomerId(val value: UUID = UUID.randomUUID()) {
     companion object {

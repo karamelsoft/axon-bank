@@ -8,7 +8,7 @@ import org.karamelsoft.axon.demo.services.accounts.api.WithdrawAmount
 import org.karamelsoft.axon.demo.services.cards.api.CardAssignments
 import org.karamelsoft.axon.demo.services.cards.api.UseCard
 import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.research.axon.libraries.service.api.andThen
+import org.karamelsoft.research.axon.libraries.service.api.andThenMono
 import org.springframework.stereotype.Component
 
 @Component
@@ -30,7 +30,7 @@ class PaymentService(val commandGateway: ReactorCommandGateway) {
         )
 
         return commandGateway.send<Status<CardAssignments>>(useCard())
-            .andThen { commandGateway.send<Status<Unit>>(withdrawAmount(it)) }
+            .andThenMono { commandGateway.send<Status<Unit>>(withdrawAmount(it)) }
             .block()!!
     }
 }

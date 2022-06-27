@@ -20,8 +20,29 @@ Content-Type: application/json
 }
 
 ###
-# @name = Register Another Customer
-PUT http://localhost:8081/service/interfaces/http/customers/95f6a678-84c3-4637-8cb6-b5db4366d167
+# @name = Register unique Customer
+#PUT http://localhost:8080/customers/95f6a678-84c3-4637-8cb6-b5db4366d166
+PUT http://localhost:8081/service/interfaces/http/customers/unique/95f6a678-84c3-4637-8cb6-b5db4366d166
+Content-Type: application/json
+
+{
+  "details": {
+    "firstName": "Frederic",
+    "lastName": "Gendebien",
+    "birthDate": "1987-03-03"
+  },
+  "address": {
+    "street": "Chenay",
+    "number": "2",
+    "postalCode": "4317",
+    "city": "Aineffe",
+    "country": "Belgium"
+  }
+}
+
+###
+# @name = Register Another unique Customer
+PUT http://localhost:8081/service/interfaces/http/customers/unique/95f6a678-84c3-4637-8cb6-b5db4366d167
 Content-Type: application/json
 
 {

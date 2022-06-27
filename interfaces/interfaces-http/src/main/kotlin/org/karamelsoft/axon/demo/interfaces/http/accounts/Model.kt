@@ -1,7 +1,10 @@
 package org.karamelsoft.axon.demo.interfaces.http.accounts
 
 import org.karamelsoft.axon.demo.interfaces.http.Event
-import org.karamelsoft.axon.demo.services.accounts.api.*
+import org.karamelsoft.axon.demo.services.accounts.api.AccountClosed
+import org.karamelsoft.axon.demo.services.accounts.api.AmountDeposited
+import org.karamelsoft.axon.demo.services.accounts.api.AmountWithdrew
+import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
 import java.time.Instant
 
 interface AccountAction {

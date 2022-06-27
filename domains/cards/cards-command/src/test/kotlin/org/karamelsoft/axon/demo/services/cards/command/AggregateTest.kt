@@ -1,7 +1,5 @@
 package org.karamelsoft.axon.demo.services.cards.command
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.karamelsoft.axon.demo.libraries.service.command.test.AggregateTest
 import org.karamelsoft.axon.demo.libraries.service.test.serialize

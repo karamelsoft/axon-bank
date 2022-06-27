@@ -1,6 +1,6 @@
 package org.karamelsoft.axon.demo.services.accounts.api
 
-import java.util.UUID
+import java.util.*
 import java.util.regex.Pattern
 
 private val AccountIdPattern = Pattern.compile("([A-Z]{2})(\\d{2})(\\d{12,26})")

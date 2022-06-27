@@ -2,7 +2,6 @@ package org.karamelsoft.axon.demo.interfaces.http.cards
 
 import org.junit.jupiter.api.Test
 import org.karamelsoft.axon.demo.libraries.service.test.serialize
-import org.karamelsoft.axon.demo.services.cards.api.CardPinCode
 import java.time.Instant
 
 class ModelTest {
