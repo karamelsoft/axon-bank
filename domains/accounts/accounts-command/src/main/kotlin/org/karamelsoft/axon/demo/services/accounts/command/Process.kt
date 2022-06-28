@@ -9,15 +9,10 @@ import org.karamelsoft.axon.demo.services.accounts.api.AmountDeposited
 import org.karamelsoft.axon.demo.services.accounts.api.AmountWithdrew
 import org.karamelsoft.axon.demo.services.accounts.api.DepositAmount
 import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 @Saga
 class TransferService {
-
-    @Transient
-    private val logger: Logger = LoggerFactory.getLogger(TransferService::class.java)
 
     @Autowired
     private lateinit var commandGateway: ReactorCommandGateway
@@ -25,8 +20,6 @@ class TransferService {
     @StartSaga
     @SagaEventHandler(associationProperty = "operationId")
     fun on(event: AmountWithdrew) {
-        logger.debug("transfer ${event.operationId} started")
-
         commandGateway.send<Status<Unit>>(DepositAmount(
             accountId = event.to,
             amount = event.amount,
@@ -38,7 +31,5 @@ class TransferService {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "operationId")
-    fun on(event: AmountDeposited) {
-        logger.debug("transfer ${event.operationId} completed")
-    }
+    fun on(event: AmountDeposited) {}
 }

@@ -73,7 +73,7 @@ data class CustomerConstraintReleased(@TargetAggregateIdentifier val customerHas
 
 
 @Aggregate
-internal class CustomerConstraint {
+internal class CustomerConstraint() {
 
     @AggregateIdentifier
     private lateinit var hash: CustomerHash

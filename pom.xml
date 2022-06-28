@@ -11,9 +11,9 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<kotlin.version>1.6.10</kotlin.version>
+		<kotlin.version>1.6.21</kotlin.version>
 		<spring-boot.version>2.6.4</spring-boot.version>
-		<axon.version>4.5.11</axon.version>
+		<axon.version>4.5.14</axon.version>
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<kotlin-logging.version>2.1.23</kotlin-logging.version>

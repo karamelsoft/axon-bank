@@ -11,7 +11,7 @@ import org.karamelsoft.axon.demo.services.accounts.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 
 @Aggregate(snapshotTriggerDefinition = "accountSnapshotter")
-internal class Account {
+internal class Account() {
 
     @AggregateIdentifier
     private lateinit var accountId: AccountId

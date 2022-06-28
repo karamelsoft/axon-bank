@@ -11,7 +11,7 @@ import org.karamelsoft.axon.demo.services.customers.api.*
 import org.karamelsoft.research.axon.libraries.service.api.Status
 
 @Aggregate
-internal class Customer {
+internal class Customer() {
 
     @AggregateIdentifier
     private lateinit var id: CustomerId

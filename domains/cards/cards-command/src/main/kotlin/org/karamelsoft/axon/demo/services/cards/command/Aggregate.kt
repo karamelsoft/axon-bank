@@ -15,7 +15,7 @@ import java.time.LocalDate
 const val MAX_WRONG_ATTEMPTS = 3
 
 @Aggregate(snapshotTriggerDefinition = "cardSnapshotter")
-internal class Card {
+internal class Card() {
 
     @AggregateIdentifier
     private lateinit var cardId: CardId
