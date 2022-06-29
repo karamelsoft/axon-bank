@@ -1,7 +1,7 @@
 package org.karamelsoft.axon.demo.services.accounts.api
 
-import org.karamelsoft.research.axon.libraries.service.api.BadInput
-import org.karamelsoft.research.axon.libraries.service.api.BadRequest
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadInput
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadRequest
 
 fun <T> invalidAccountNumber() = BadInput<T>("invalid account number")
 fun <T> accountAlreadyExists() = BadRequest<T>("account already exists")

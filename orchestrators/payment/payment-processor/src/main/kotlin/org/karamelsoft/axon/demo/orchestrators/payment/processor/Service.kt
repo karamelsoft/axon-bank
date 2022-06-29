@@ -7,8 +7,8 @@ import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.WithdrawAmount
 import org.karamelsoft.axon.demo.services.cards.api.CardAssignments
 import org.karamelsoft.axon.demo.services.cards.api.UseCard
-import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.research.axon.libraries.service.api.andThenMono
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.andThenMono
 import org.springframework.stereotype.Component
 
 @Component

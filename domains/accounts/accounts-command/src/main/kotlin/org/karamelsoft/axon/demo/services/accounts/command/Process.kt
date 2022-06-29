@@ -8,7 +8,7 @@ import org.axonframework.spring.stereotype.Saga
 import org.karamelsoft.axon.demo.services.accounts.api.AmountDeposited
 import org.karamelsoft.axon.demo.services.accounts.api.AmountWithdrew
 import org.karamelsoft.axon.demo.services.accounts.api.DepositAmount
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.springframework.beans.factory.annotation.Autowired
 
 @Saga

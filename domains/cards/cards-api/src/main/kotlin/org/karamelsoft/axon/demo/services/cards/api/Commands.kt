@@ -8,7 +8,7 @@ sealed interface CardCommand {
     val timestamp: Instant
 }
 
-data class RegisterNewCard(
+data class CreateCard(
     @TargetAggregateIdentifier override val cardId: CardId,
     val validity: CardValidity,
     val account: CardAccount,

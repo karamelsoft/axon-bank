@@ -15,9 +15,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>service</module>
-        <module>secrets</module>
+        <module>artifacts</module>
         <module>mongo</module>
+        <module>secrets</module>
     </modules>
 
 </project>

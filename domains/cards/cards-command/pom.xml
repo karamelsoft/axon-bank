@@ -15,11 +15,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+            <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
             <artifactId>command</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+            <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
             <artifactId>command-test</artifactId>
             <scope>test</scope>
         </dependency>

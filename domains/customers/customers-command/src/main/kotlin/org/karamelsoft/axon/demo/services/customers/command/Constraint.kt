@@ -7,9 +7,9 @@ import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorComma
 import org.axonframework.modelling.command.*
 import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.demo.services.customers.api.CustomerDetails
-import org.karamelsoft.research.axon.libraries.service.api.BadRequest
-import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.research.axon.libraries.service.api.andThenMono
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadRequest
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.andThenMono
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import java.time.format.DateTimeFormatter
@@ -68,8 +68,8 @@ fun customerAlreadyExists() = BadRequest<Unit>(message = "customer already exist
 
 data class ClaimCustomerConstraint(@TargetAggregateIdentifier val customerHash: CustomerHash)
 data class ReleaseCustomerConstraint(@TargetAggregateIdentifier val customerHash: CustomerHash)
-data class CustomerConstraintClaimed(@TargetAggregateIdentifier val customerHash: CustomerHash)
-data class CustomerConstraintReleased(@TargetAggregateIdentifier val customerHash: CustomerHash)
+data class CustomerConstraintClaimed(val customerHash: CustomerHash)
+data class CustomerConstraintReleased(val customerHash: CustomerHash)
 
 
 @Aggregate

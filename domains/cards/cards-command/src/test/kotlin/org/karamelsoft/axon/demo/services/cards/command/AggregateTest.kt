@@ -1,11 +1,11 @@
 package org.karamelsoft.axon.demo.services.cards.command
 
 import org.junit.jupiter.api.Test
-import org.karamelsoft.axon.demo.libraries.service.command.test.AggregateTest
-import org.karamelsoft.axon.demo.libraries.service.test.serialize
+import org.karamelsoft.axon.demo.libraries.artifacts.command.test.AggregateTest
+import org.karamelsoft.axon.demo.libraries.artifacts.test.serialize
 import org.karamelsoft.axon.demo.services.cards.api.*
-import org.karamelsoft.research.axon.libraries.service.api.BadRequest
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadRequest
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -24,15 +24,15 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     fun `registering a new card`() {
         aggregate
             .given()
-            .`when`(serialize(RegisterNewCard(cardId, validity, account, owner, now)))
+            .`when`(serialize(CreateCard(cardId, validity, account, owner, now)))
             .expectSuccessfulHandlerExecution()
-            .expectEvents(serialize( NewCardRegistered(cardId, validity, account, owner, now)))
+            .expectEvents(serialize( CardCreated(cardId, validity, account, owner, now)))
     }
 
     @Test
     fun `block a card`() {
         aggregate
-            .given(serialize( NewCardRegistered(cardId, validity, account, owner, now)))
+            .given(serialize( CardCreated(cardId, validity, account, owner, now)))
             .`when`(serialize( BlockCard(cardId, now.plus(5, ChronoUnit.DAYS))))
             .expectSuccessfulHandlerExecution()
             .expectEvents(serialize( CardBlocked(cardId, now.plus(5, ChronoUnit.DAYS))))
@@ -41,7 +41,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `block a card twice`() {
         aggregate
-            .given(serialize( NewCardRegistered(cardId, validity, account, owner, now)))
+            .given(serialize( CardCreated(cardId, validity, account, owner, now)))
             .andGiven(serialize( CardBlocked(cardId, now.plus(5, ChronoUnit.DAYS))))
             .`when`(serialize( BlockCard(cardId, now.plus(6, ChronoUnit.DAYS))))
             .expectSuccessfulHandlerExecution()
@@ -52,7 +52,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `setup pin code`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .`when`(SetupCardPinCode(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectEvents(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
@@ -61,7 +61,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `setup pin code twice`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .`when`(SetupCardPinCode(cardId, pinCode, now.plus(2, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
@@ -72,7 +72,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `setup pin code after card blocked`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardBlocked(cardId, now.plus(1, ChronoUnit.DAYS)))
             .`when`(SetupCardPinCode(cardId, pinCode, now.plus(2, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
@@ -83,7 +83,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `change pin code`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .`when`(ChangeCardPinCode(cardId, pinCode, newPinCode, now.plus(2, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
@@ -93,7 +93,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `change pin code without pin setup`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .`when`(ChangeCardPinCode(cardId, pinCode, newPinCode, now.plus(2, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
             .expectNoEvents()
@@ -103,7 +103,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `change pin code again`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeChanged(cardId, newPinCode, now.plus(2, ChronoUnit.DAYS)))
             .`when`(ChangeCardPinCode(cardId, newPinCode, pinCode, now.plus(3, ChronoUnit.DAYS)))
@@ -114,7 +114,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `change pin code after card blocked`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardBlocked(cardId, now.plus(2, ChronoUnit.DAYS)))
             .`when`(ChangeCardPinCode(cardId, newPinCode, pinCode, now.plus(3, ChronoUnit.DAYS)))
@@ -126,7 +126,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeChanged(cardId, newPinCode, now.plus(2, ChronoUnit.DAYS)))
             .`when`(UseCard(cardId, newPinCode, now.plus(3, ChronoUnit.DAYS)))
@@ -138,7 +138,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card with wrong pin code`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()
@@ -149,7 +149,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card with good pin code after 2 failures`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
@@ -162,7 +162,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card with wrong pin code after 2 failures and 1 success`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
@@ -176,7 +176,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card with wrong pin code after 2 failures`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardPinCodeSetup(cardId, pinCode, now.plus(1, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
             .andGiven(CardPinCodeValidationFailed(cardId, now.plus(3, ChronoUnit.DAYS)))
@@ -192,7 +192,7 @@ internal class CardTest : AggregateTest<Card>(Card::class.java) {
     @Test
     fun `use card after card blocked`() {
         aggregate
-            .given(NewCardRegistered(cardId, validity, account, owner, now))
+            .given(CardCreated(cardId, validity, account, owner, now))
             .andGiven(CardBlocked(cardId, now.plus(3, ChronoUnit.DAYS)))
             .`when`(UseCard(cardId, wrongPinCode, now.plus(3, ChronoUnit.DAYS)))
             .expectSuccessfulHandlerExecution()

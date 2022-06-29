@@ -8,7 +8,7 @@ sealed interface CardEvent {
     val timestamp: Instant
 }
 
-data class NewCardRegistered(
+data class CardCreated(
     override val cardId: CardId,
     val validity: CardValidity,
     val account: CardAccount,
@@ -42,4 +42,3 @@ data class CardPinCodeValidationFailed(
     @TargetAggregateIdentifier override val cardId: CardId,
     override val timestamp: Instant
 ): CardEvent
-

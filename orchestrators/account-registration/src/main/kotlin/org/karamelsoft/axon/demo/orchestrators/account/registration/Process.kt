@@ -10,7 +10,7 @@ import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.AccountOwner
 import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
 import org.karamelsoft.axon.demo.services.cards.api.*
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,7 +36,7 @@ class AccountRegistrationProcess {
         accountOwner = event.owner
         cardId = CardId()
         SagaLifecycle.associateWith("cardId", cardId.toString())
-        commandGateway.send<Status<Unit>>(RegisterNewCard(
+        commandGateway.send<Status<Unit>>(CreateCard(
             cardId = cardId,
             account = CardAccount(accountId.number),
             owner = CardOwner(accountOwner.reference),
@@ -46,7 +46,7 @@ class AccountRegistrationProcess {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "cardId")
-    fun handle(event: NewCardRegistered) {
+    fun handle(event: CardCreated) {
         logger.info("Card created")
     }
 }

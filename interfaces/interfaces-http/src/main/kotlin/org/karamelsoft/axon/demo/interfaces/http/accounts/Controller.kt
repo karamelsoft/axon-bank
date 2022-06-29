@@ -6,8 +6,8 @@ import org.karamelsoft.axon.demo.interfaces.http.handleStatus
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.accounts.api.DepositAmount
 import org.karamelsoft.axon.demo.services.accounts.api.WithdrawAmount
-import org.karamelsoft.research.axon.libraries.service.api.Status
-import org.karamelsoft.research.axon.libraries.service.module.readEvents
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.module.readEvents
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

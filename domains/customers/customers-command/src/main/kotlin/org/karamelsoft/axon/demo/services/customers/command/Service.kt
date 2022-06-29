@@ -5,12 +5,11 @@ import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorComma
 import org.karamelsoft.axon.demo.services.customers.api.CustomerId
 import org.karamelsoft.axon.demo.services.customers.api.RegisterNewCustomer
 import org.karamelsoft.axon.demo.services.customers.api.RegisterUniqueCustomer
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.springframework.stereotype.Component
 
 @Component
 class CustomerService(val commandGateway: ReactorCommandGateway, val constraintStore: CustomerConstraintStore) {
-
     @CommandHandler
     fun registerUniqueCustomer(command: RegisterUniqueCustomer): Status<CustomerId> {
         return constraintStore.create(CustomerHash.from(command.details)) {

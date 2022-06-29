@@ -12,7 +12,7 @@ import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
 import org.karamelsoft.axon.demo.services.accounts.api.OpenNewAccount
 import org.karamelsoft.axon.demo.services.customers.api.CustomerId
 import org.karamelsoft.axon.demo.services.customers.api.NewCustomerRegistered
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

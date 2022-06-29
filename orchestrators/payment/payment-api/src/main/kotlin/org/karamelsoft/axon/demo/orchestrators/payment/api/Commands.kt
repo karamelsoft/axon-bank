@@ -4,7 +4,7 @@ import org.axonframework.commandhandling.RoutingKey
 import org.karamelsoft.axon.demo.services.accounts.api.AccountId
 import org.karamelsoft.axon.demo.services.cards.api.CardId
 import org.karamelsoft.axon.demo.services.cards.api.CardPinCode
-import org.karamelsoft.research.axon.libraries.service.api.Command
+import org.karamelsoft.research.axon.libraries.artifacts.api.Command
 import java.time.Instant
 import java.util.*
 

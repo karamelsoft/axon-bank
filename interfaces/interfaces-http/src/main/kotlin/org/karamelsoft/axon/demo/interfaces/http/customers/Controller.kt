@@ -9,7 +9,7 @@ import org.karamelsoft.axon.demo.services.customers.api.CustomerId
 import org.karamelsoft.axon.demo.services.customers.api.RegisterUniqueCustomer
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.CustomerDashboardResponse
 import org.karamelsoft.axon.demo.views.customer.dashboard.api.GetCustomerDashboard
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 

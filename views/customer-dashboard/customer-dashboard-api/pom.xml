@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+            <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
             <artifactId>api</artifactId>
         </dependency>
     </dependencies>

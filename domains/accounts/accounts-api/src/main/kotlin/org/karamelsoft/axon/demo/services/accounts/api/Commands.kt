@@ -1,7 +1,7 @@
 package org.karamelsoft.axon.demo.services.accounts.api
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
-import org.karamelsoft.research.axon.libraries.service.api.Command
+import org.karamelsoft.research.axon.libraries.artifacts.api.Command
 import java.time.Instant
 import java.util.*
 

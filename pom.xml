@@ -63,42 +63,42 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>command</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>command-test</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>module</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>orchestrator</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>interface</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>test</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.karamelsoft.axon.demo.libraries.service</groupId>
+				<groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
 				<artifactId>view</artifactId>
 				<version>${project.version}</version>
 			</dependency>

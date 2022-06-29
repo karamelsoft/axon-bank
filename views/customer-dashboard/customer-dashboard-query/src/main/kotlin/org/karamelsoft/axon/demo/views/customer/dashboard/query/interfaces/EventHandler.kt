@@ -6,7 +6,7 @@ import org.karamelsoft.axon.demo.services.accounts.api.AmountDeposited
 import org.karamelsoft.axon.demo.services.accounts.api.AmountWithdrew
 import org.karamelsoft.axon.demo.services.accounts.api.NewAccountOpened
 import org.karamelsoft.axon.demo.services.cards.api.CardBlocked
-import org.karamelsoft.axon.demo.services.cards.api.NewCardRegistered
+import org.karamelsoft.axon.demo.services.cards.api.CardCreated
 import org.karamelsoft.axon.demo.services.customers.api.CustomerAddressCorrected
 import org.karamelsoft.axon.demo.services.customers.api.CustomerDetailsCorrected
 import org.karamelsoft.axon.demo.services.customers.api.NewCustomerRegistered
@@ -87,7 +87,7 @@ class CustomerDashboardEventHandler(private val customerDashboardRepository: Cus
     }
 
     @EventHandler
-    fun on(event: NewCardRegistered) {
+    fun on(event: CardCreated) {
         logger.trace("Received NewCardRegistered for card id: ${event.cardId} and owner: ${event.owner}")
         (customerDashboardRepository.findByOwner(event.owner)
             ?: throw IllegalStateException("Could not find customer dashboard for card owner: ${event.owner}"))

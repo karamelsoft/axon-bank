@@ -1,6 +1,6 @@
 package org.karamelsoft.axon.demo.services.accounts.api
 
-import org.karamelsoft.research.axon.libraries.service.api.Event
+import org.karamelsoft.research.axon.libraries.artifacts.api.Event
 import java.time.Instant
 import java.util.*
 

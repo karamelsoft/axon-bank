@@ -4,7 +4,7 @@ clean:
 	mvn clean
 
 build:
-	mvn compile test-compile -T 4C
+	mvn compile test-compile
 
 container:
 	mvn package -Pdocker

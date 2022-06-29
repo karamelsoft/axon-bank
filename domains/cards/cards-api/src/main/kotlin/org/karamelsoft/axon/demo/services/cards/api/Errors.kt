@@ -1,7 +1,7 @@
 package org.karamelsoft.axon.demo.services.cards.api
 
-import org.karamelsoft.research.axon.libraries.service.api.BadInput
-import org.karamelsoft.research.axon.libraries.service.api.BadRequest
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadInput
+import org.karamelsoft.research.axon.libraries.artifacts.api.BadRequest
 
 fun <T> invalidCardNumber() = BadInput<T>("invalid card number")
 fun <T> invalidCardValidity() = BadInput<T>("invalid card validity")

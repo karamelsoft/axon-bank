@@ -8,7 +8,7 @@ import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.demo.services.accounts.api.*
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 
 @Aggregate(snapshotTriggerDefinition = "accountSnapshotter")
 internal class Account() {

@@ -8,7 +8,7 @@ import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.demo.services.cards.api.*
-import org.karamelsoft.research.axon.libraries.service.api.Status
+import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import java.time.Instant
 import java.time.LocalDate
 
@@ -32,9 +32,9 @@ internal class Card() {
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
-    fun handle(command: RegisterNewCard): Status<Unit> = Status.of {
+    fun handle(command: CreateCard): Status<Unit> = Status.of {
         AggregateLifecycle.apply(
-            NewCardRegistered(
+            CardCreated(
                 cardId = command.cardId,
                 validity = command.validity,
                 account = command.account,
@@ -45,7 +45,7 @@ internal class Card() {
     }
 
     @EventSourcingHandler
-    fun on(event: NewCardRegistered) {
+    fun on(event: CardCreated) {
         cardId = event.cardId
         owner = event.owner
         account = event.account
