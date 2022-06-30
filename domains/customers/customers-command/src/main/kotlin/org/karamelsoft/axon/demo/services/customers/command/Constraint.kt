@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import java.time.format.DateTimeFormatter
 
-val hashFunction = Hashing.sha256()
-val charset = Charsets.UTF_8
-
 interface CustomerConstraintStore {
     fun <S> create(hash: CustomerHash, operation: () -> Status<S>): Status<S>
     fun <S> update(previousHash: CustomerHash, newHash: CustomerHash, operation: () -> Status<S>): Status<S>
@@ -25,6 +22,9 @@ interface CustomerConstraintStore {
 
 data class CustomerHash(val value: Long) {
     companion object {
+        private val hashFunction = Hashing.sha256()
+        private val charset = Charsets.UTF_8
+
         fun from(details: CustomerDetails): CustomerHash {
             return CustomerHash(
                 hashFunction.newHasher()
