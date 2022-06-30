@@ -14,14 +14,6 @@ sealed interface CustomerCommand {
     val timestamp: Instant
 }
 
-fun customerConstraint(details: CustomerDetails, address: CustomerAddress): String {
-    return hashFunction.newHasher()
-        .putString(details.firstName, defaultCharset)
-        .putString(details.lastName, defaultCharset)
-        .putString(details.birthDate.toString(), defaultCharset)
-        .hash().asLong().toString()
-}
-
 data class RegisterUniqueCustomer(
     @RoutingKey val customerId: CustomerId,
     val details: CustomerDetails,
