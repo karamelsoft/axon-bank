@@ -6,9 +6,6 @@ import org.axonframework.commandhandling.RoutingKey
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.time.Instant
 
-private val hashFunction: HashFunction = Hashing.sha512()
-private val defaultCharset = Charsets.UTF_8
-
 sealed interface CustomerCommand {
     val customerId: CustomerId
     val timestamp: Instant
