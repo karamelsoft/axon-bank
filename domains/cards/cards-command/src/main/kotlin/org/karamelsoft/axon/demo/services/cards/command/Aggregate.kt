@@ -33,6 +33,7 @@ internal class Card() {
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
     fun handle(command: CreateCard): Status<Unit> = Status.of {
+        //TODO verify validity
         AggregateLifecycle.apply(
             CardCreated(
                 cardId = command.cardId,

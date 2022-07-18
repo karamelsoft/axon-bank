@@ -34,11 +34,11 @@ data class CardPinCodeChanged(
 ): CardEvent
 
 data class CardPinCodeValidated(
-    @TargetAggregateIdentifier override val cardId: CardId,
+    override val cardId: CardId,
     override val timestamp: Instant
 ): CardEvent
 
 data class CardPinCodeValidationFailed(
-    @TargetAggregateIdentifier override val cardId: CardId,
+    override val cardId: CardId,
     override val timestamp: Instant
 ): CardEvent
