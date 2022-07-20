@@ -2,11 +2,11 @@ version: "3.7"
 
 services:
   reverseproxy:
-    image: axondemo/reverseproxy:latest
+    image: axonbank/reverseproxy:latest
     ports:
       - "8081:80"
     networks:
-      - axon-demo
+      - axon-bank
 
   axonserver:
     image: axoniq/axonserver:latest
@@ -17,7 +17,7 @@ services:
     environment:
       AXONIQ_AXONSERVER_DEVMODE_ENABLED: "true"
     networks:
-      - axon-demo
+      - axon-bank
 
   mongo:
     image: mongo
@@ -28,7 +28,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: r00t
     networks:
-      - axon-demo
+      - axon-bank
 
   mongo-express:
     image: mongo-express:latest
@@ -40,8 +40,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: r00t
       ME_CONFIG_MONGODB_URL: mongodb://root:r00t@mongo:27017/
     networks:
-      - axon-demo
+      - axon-bank
 
 networks:
-  axon-demo:
+  axon-bank:
     external: true

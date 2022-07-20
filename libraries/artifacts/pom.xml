@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.demo.libraries</groupId>
+        <groupId>org.karamelsoft.axon.bank.libraries</groupId>
         <artifactId>libraries</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
+    <groupId>org.karamelsoft.axon.bank.libraries.artifacts</groupId>
     <artifactId>artifacts</artifactId>
     <packaging>pom</packaging>
 
@@ -29,7 +29,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
+                <groupId>org.karamelsoft.axon.bank.libraries.artifacts</groupId>
                 <artifactId>module</artifactId>
                 <version>${project.version}</version>
             </dependency>

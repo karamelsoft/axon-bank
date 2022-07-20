@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.demo.orchestrators</groupId>
+        <groupId>org.karamelsoft.axon.bank.orchestrators</groupId>
         <artifactId>orchestrators</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.karamelsoft.axon.demo.orchestrators.payment</groupId>
+    <groupId>org.karamelsoft.axon.bank.orchestrators.payment</groupId>
     <artifactId>payment</artifactId>
     <packaging>pom</packaging>
 

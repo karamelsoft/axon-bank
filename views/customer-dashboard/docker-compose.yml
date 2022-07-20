@@ -2,12 +2,12 @@ version: "3.7"
 
 services:
   customer-dashboard-query:
-    image: axondemo/customer-dashboard-query:latest
+    image: axonbank/customer-dashboard-query:latest
     environment:
       SPRING_PROFILES_ACTIVE: swarm
     networks:
-      - axon-demo
+      - axon-bank
 
 networks:
-  axon-demo:
+  axon-bank:
     external: true

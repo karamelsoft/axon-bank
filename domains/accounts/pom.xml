@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.demo.services</groupId>
+        <groupId>org.karamelsoft.axon.bank.services</groupId>
         <artifactId>domains</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.karamelsoft.axon.demo.services.accounts</groupId>
+    <groupId>org.karamelsoft.axon.bank.services.accounts</groupId>
     <artifactId>accounts</artifactId>
     <packaging>pom</packaging>
 

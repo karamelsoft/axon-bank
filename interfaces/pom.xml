@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.demo</groupId>
-        <artifactId>axon-demo</artifactId>
+        <groupId>org.karamelsoft.axon.bank</groupId>
+        <artifactId>axon-bank</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.karamelsoft.axon.demo.interfaces</groupId>
+    <groupId>org.karamelsoft.axon.bank.interfaces</groupId>
     <artifactId>interfaces</artifactId>
     <packaging>pom</packaging>
 

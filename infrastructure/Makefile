@@ -1,4 +1,4 @@
-NETWORK=axon-demo
+NETWORK=axon-bank
 STACK=infra
 
 build:

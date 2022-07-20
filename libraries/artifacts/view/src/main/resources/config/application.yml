@@ -27,7 +27,7 @@ spring:
       port: 27017
       username: root
       password: r00t
-      database: axondemo
+      database: axonbank
       authentication-database: admin
 
 axon:
@@ -50,7 +50,7 @@ spring:
       port: 27017
       username: root
       password: r00t
-      database: axondemo
+      database: axonbank
       authentication-database: admin
 
 axon:

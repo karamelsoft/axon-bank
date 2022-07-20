@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.demo.orchestrators.payment</groupId>
+        <groupId>org.karamelsoft.axon.bank.orchestrators.payment</groupId>
         <artifactId>payment</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -16,15 +16,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.libraries.artifacts</groupId>
+            <groupId>org.karamelsoft.axon.bank.libraries.artifacts</groupId>
             <artifactId>api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.services.accounts</groupId>
+            <groupId>org.karamelsoft.axon.bank.services.accounts</groupId>
             <artifactId>accounts-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.karamelsoft.axon.demo.services.cards</groupId>
+            <groupId>org.karamelsoft.axon.bank.services.cards</groupId>
             <artifactId>cards-api</artifactId>
         </dependency>
     </dependencies>
