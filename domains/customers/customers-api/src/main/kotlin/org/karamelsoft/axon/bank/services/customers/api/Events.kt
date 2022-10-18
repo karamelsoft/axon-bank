@@ -14,14 +14,21 @@ data class NewCustomerRegistered(
     override val timestamp: Instant
 ): CustomerEvent
 
-data class CustomerDetailsCorrected(
+data class CustomerUpdated(
     override val customerId: CustomerId,
-    val newDetails: CustomerDetails,
+    val details: CustomerDetails,
+    val address: CustomerAddress,
     override val timestamp: Instant
 ): CustomerEvent
 
-data class CustomerAddressCorrected(
-    override val customerId: CustomerId,
-    val newAddress: CustomerAddress,
-    override val timestamp: Instant
-): CustomerEvent
+//data class CustomerDetailsCorrected(
+//    override val customerId: CustomerId,
+//    val newDetails: CustomerDetails,
+//    override val timestamp: Instant
+//): CustomerEvent
+//
+//data class CustomerAddressCorrected(
+//    override val customerId: CustomerId,
+//    val newAddress: CustomerAddress,
+//    override val timestamp: Instant
+//): CustomerEvent
