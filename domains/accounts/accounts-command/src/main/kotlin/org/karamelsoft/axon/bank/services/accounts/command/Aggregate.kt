@@ -18,6 +18,8 @@ internal class Account() {
 
     private var balance: Double = 0.0
     private var closed: Boolean = false
+    private var creditLineOpened: Boolean = false
+    private var creditLineAmount: Double = 0.0
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
@@ -49,7 +51,7 @@ internal class Account() {
     @CommandHandler
     fun handle(command: WithdrawAmount): Status<Unit> = when {
         closed -> accountClosed()
-        balance < command.amount -> notEnoughCredit()
+        balance + creditLineAmount < command.amount -> notEnoughCredit()
         else -> Status.of<Unit> {
             AggregateLifecycle.apply(
                 AmountWithdrew(
@@ -75,6 +77,67 @@ internal class Account() {
             )
         }
 
+    @CommandHandler
+    fun handle(command: OpenCreditLine): Status<Unit> = when {
+        closed -> accountClosed()
+        creditLineOpened -> creditLineAlreadyOpened()
+        else -> Status.of<Unit> {
+            AggregateLifecycle.apply(
+                CreditLineOpened(
+                    accountId = accountId,
+                    amount = command.amount,
+                    timestamp = command.timestamp
+                )
+            )
+        }
+    }
+
+    @CommandHandler
+    fun handle(command: IncreaseCreditLine): Status<Unit> = when {
+        closed -> accountClosed()
+        !creditLineOpened -> creditLineNotOpened()
+        else -> Status.of<Unit> {
+            AggregateLifecycle.apply(
+                CreditLineIncreased(
+                    accountId = accountId,
+                    amount = command.amount,
+                    timestamp = command.timestamp
+                )
+            )
+        }
+    }
+
+    @CommandHandler
+    fun handle(command: DecreaseCreditLine): Status<Unit> = when {
+        closed -> accountClosed()
+        !creditLineOpened -> creditLineNotOpened()
+        balance < 0.0 && -balance > creditLineAmount - command.amount -> creditLineNotReimbursed()
+        else -> Status.of<Unit> {
+            AggregateLifecycle.apply(
+                CreditLineDecreased(
+                    accountId = accountId,
+                    amount = command.amount,
+                    timestamp = command.timestamp
+                )
+            )
+        }
+    }
+
+    @CommandHandler
+    fun handle(command: CloseCreditLine): Status<Unit> = when {
+        closed -> accountClosed()
+        !creditLineOpened -> creditLineNotOpened()
+        balance < 0.0 -> creditLineNotReimbursed()
+        else -> Status.of<Unit> {
+            AggregateLifecycle.apply(
+                CreditLineClosed(
+                    accountId = accountId,
+                    timestamp = command.timestamp
+                )
+            )
+        }
+    }
+
     @EventSourcingHandler
     fun on(event: NewAccountOpened) {
         accountId = event.accountId
@@ -95,6 +158,28 @@ internal class Account() {
     @EventSourcingHandler
     fun on(event: AccountClosed) {
         closed = true
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineOpened) {
+        creditLineOpened = true
+        creditLineAmount = event.amount
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineIncreased) {
+        creditLineAmount += event.amount
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineDecreased) {
+        creditLineAmount -= event.amount
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineClosed) {
+        creditLineOpened = false
+        creditLineAmount = 0.0
     }
 
 }
