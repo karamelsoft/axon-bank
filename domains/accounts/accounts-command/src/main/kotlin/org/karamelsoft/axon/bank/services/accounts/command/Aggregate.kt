@@ -47,10 +47,13 @@ internal class Account() {
         }
 
     @CommandHandler
-    fun handle(command: WithdrawAmount): Status<Unit> = when {
+  fun handle(command: WithdrawAmount, commandGateway: ReactorCommandGateway): Status<Unit> = when {
         closed -> accountClosed()
         balance < command.amount -> notEnoughCredit()
         else -> Status.of<Unit> {
+            // Message out of bounded-context
+            commandGateway.send<Status<Unit>>(SendMailToCustomer())
+            // Message out of bounded-context
             AggregateLifecycle.apply(
                 AmountWithdrew(
                     accountId = accountId,
