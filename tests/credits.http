@@ -1,0 +1,25 @@
+###
+# @name Increase credit line
+POST http://localhost:8081/service/interfaces/http/credits/8caa34b9-d855-4ace-9052-0e47a2604470/incease
+Content-Type: application/json
+
+{
+  "amount": 12.0
+}
+
+###
+# @name Decrease credit line
+POST http://localhost:8081/service/interfaces/http/credits/8caa34b9-d855-4ace-9052-0e47a2604470/decrease
+Content-Type: application/json
+
+{
+  "amount": 12.0
+}
+
+###
+# @name Close credit line
+POST http://localhost:8081/service/interfaces/http/credits/8caa34b9-d855-4ace-9052-0e47a2604470/close
+
+###
+# @name = Get Credit History
+GET http://localhost:8081/service/interfaces/http/credits/8caa34b9-d855-4ace-9052-0e47a2604470/history

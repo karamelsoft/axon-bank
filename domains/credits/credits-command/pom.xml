@@ -6,32 +6,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.bank.orchestrators</groupId>
-        <artifactId>orchestrators</artifactId>
+        <groupId>org.karamelsoft.axon.bank.services.credits</groupId>
+        <artifactId>credits</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>account-registration</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>credits-command</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.karamelsoft.axon.bank.libraries.artifacts</groupId>
-            <artifactId>orchestrator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.karamelsoft.axon.bank.services.accounts</groupId>
-            <artifactId>accounts-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.karamelsoft.axon.bank.services.cards</groupId>
-            <artifactId>cards-api</artifactId>
+            <artifactId>command</artifactId>
         </dependency>
         <dependency>
             <groupId>org.karamelsoft.axon.bank.services.credits</groupId>
             <artifactId>credits-api</artifactId>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -42,14 +34,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

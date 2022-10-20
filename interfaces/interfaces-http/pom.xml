@@ -36,6 +36,10 @@
             <artifactId>cards-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.karamelsoft.axon.bank.services.credits</groupId>
+            <artifactId>credits-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.karamelsoft.axon.bank.orchestrators.payment</groupId>
             <artifactId>payment-api</artifactId>
         </dependency>

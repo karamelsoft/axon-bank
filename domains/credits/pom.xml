@@ -6,21 +6,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.karamelsoft.axon.bank</groupId>
-        <artifactId>axon-bank</artifactId>
+        <groupId>org.karamelsoft.axon.bank.services</groupId>
+        <artifactId>domains</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.karamelsoft.axon.bank.services</groupId>
-    <artifactId>domains</artifactId>
+    <groupId>org.karamelsoft.axon.bank.services.credits</groupId>
+    <artifactId>credits</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-
-        <module>accounts</module>
-        <module>cards</module>
-        <module>credits</module>
-        <module>customers</module>
+        <module>credits-api</module>
+        <module>credits-command</module>
     </modules>
 
 </project>
