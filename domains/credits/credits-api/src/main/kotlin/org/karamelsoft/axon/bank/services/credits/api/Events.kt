@@ -31,3 +31,15 @@ data class CreditLineClosed(
     override val creditLineId: CreditLineId,
     override val timestamp: Instant = Instant.now()
 ): CreditLineEvent
+
+data class AmountBorrowed(
+    override val creditLineId: CreditLineId,
+    val value: Double,
+    override val timestamp: Instant = Instant.now()
+): CreditLineEvent
+
+data class AmountReimbursed(
+    override val creditLineId: CreditLineId,
+    val value: Double,
+    override val timestamp: Instant = Instant.now()
+): CreditLineEvent
