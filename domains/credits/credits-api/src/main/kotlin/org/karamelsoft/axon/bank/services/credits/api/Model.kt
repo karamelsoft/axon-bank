@@ -1,6 +1,5 @@
 package org.karamelsoft.axon.bank.services.credits.api
 
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.Period
 import java.util.*
@@ -20,7 +19,7 @@ data class CreditLineValidity(val openingDate: LocalDateTime, val period: Period
         }
     }
 
-    fun isActive() = isActive(LocalDateTime.now())
+    fun isExpired(date: LocalDateTime) = date.isBefore(openingDate.plus(period))
 
-    fun isActive(date: LocalDateTime) = date.isAfter(openingDate) && date.isBefore(openingDate.plus(period))
+    fun isEffective(date: LocalDateTime) = date.isAfter(openingDate)
 }

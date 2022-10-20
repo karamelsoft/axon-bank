@@ -9,6 +9,7 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.karamelsoft.axon.bank.services.credits.api.*
 import org.karamelsoft.research.axon.libraries.artifacts.api.Status
+import kotlin.math.abs
 
 @Aggregate
 internal class CreditLine() {
@@ -19,6 +20,7 @@ internal class CreditLine() {
     private lateinit var validity: CreditLineValidity
     private lateinit var creditor: CreditorAccount
 
+    private var closed: Boolean = false
     private var outstanding: Double = 0.0
 
     @CommandHandler
@@ -36,12 +38,61 @@ internal class CreditLine() {
         command.creditLineId
     }
 
+    @CommandHandler
+    fun handle(command: IncreaseCreditLine): Status<Double> = Status.of {
+        val newThreshold = threshold + abs(command.amount)
+        AggregateLifecycle.apply(
+            CreditLineIncreased(
+                creditLineId = command.creditLineId,
+                newThreshold = newThreshold
+            )
+        )
+        newThreshold
+    }
+
+    @CommandHandler
+    fun handle(command: DecreaseCreditLine): Status<Double> = Status.of {
+        val newThreshold = threshold - abs(command.amount)
+        AggregateLifecycle.apply(
+            CreditLineDecreased(
+                creditLineId = command.creditLineId,
+                newThreshold = newThreshold
+            )
+        )
+        newThreshold
+    }
+
+    @CommandHandler
+    fun handle(command: CloseCreditLine): Status<Unit> = Status.of {
+        AggregateLifecycle.apply(
+            CreditLineClosed(
+                creditLineId = command.creditLineId
+            )
+        )
+    }
+
     @EventSourcingHandler
     fun on(event: CreditLineOpened) {
         id = event.creditLineId
         threshold = event.threshold
         validity = event.validity
         creditor = event.creditor
+        closed = false
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineIncreased) {
+        threshold = event.newThreshold
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineDecreased) {
+        threshold = event.newThreshold
+    }
+
+    @EventSourcingHandler
+    fun on(event: CreditLineClosed) {
+        closed = true
     }
 
 }

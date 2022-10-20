@@ -16,3 +16,23 @@ data class OpenCreditLine(
     val creditor: CreditorAccount,
     override val timestamp: Instant = Instant.now()
 ): CreditLineCommand
+
+data class IncreaseCreditLine(
+    @TargetAggregateIdentifier
+    override val creditLineId: CreditLineId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): CreditLineCommand
+
+data class DecreaseCreditLine(
+    @TargetAggregateIdentifier
+    override val creditLineId: CreditLineId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): CreditLineCommand
+
+data class CloseCreditLine(
+    @TargetAggregateIdentifier
+    override val creditLineId: CreditLineId,
+    override val timestamp: Instant = Instant.now()
+): CreditLineCommand
