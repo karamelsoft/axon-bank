@@ -2,6 +2,7 @@ package org.karamelsoft.axon.bank.services.accounts.command
 
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
+import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway
 import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
@@ -47,10 +48,14 @@ internal class Account() {
         }
 
     @CommandHandler
-    fun handle(command: WithdrawAmount): Status<Unit> = when {
+    fun handle(command: WithdrawAmount, commandGateway: ReactorCommandGateway): Status<Unit> = when {
         closed -> accountClosed()
         balance < command.amount -> notEnoughCredit()
         else -> Status.of<Unit> {
+            // Message out of bounded-context
+            commandGateway.send<Status<Unit>>(SendMailToCustomer())
+            // Message out of bounded-context
+
             AggregateLifecycle.apply(
                 AmountWithdrew(
                     accountId = accountId,
