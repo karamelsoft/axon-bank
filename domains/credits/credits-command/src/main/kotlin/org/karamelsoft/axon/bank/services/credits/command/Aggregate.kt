@@ -39,29 +39,25 @@ internal class CreditLine() {
     }
 
     @CommandHandler
-    fun handle(command: IncreaseCreditLine): Status<Double> = Status.of {
+    fun handle(command: IncreaseCreditLine): Status<Unit> = Status.of {
         // TODO credit line not available, expired or closed
-        val newThreshold = threshold + abs(command.amount)
         AggregateLifecycle.apply(
             CreditLineIncreased(
                 creditLineId = command.creditLineId,
-                newThreshold = newThreshold
+                amount = abs(command.amount)
             )
         )
-        newThreshold
     }
 
     @CommandHandler
-    fun handle(command: DecreaseCreditLine): Status<Double> = Status.of {
+    fun handle(command: DecreaseCreditLine): Status<Unit> = Status.of {
         // TODO credit line not available, expired or closed
-        val newThreshold = threshold - abs(command.amount)
         AggregateLifecycle.apply(
             CreditLineDecreased(
                 creditLineId = command.creditLineId,
-                newThreshold = newThreshold
+                amount = abs(command.amount)
             )
         )
-        newThreshold
     }
 
     @CommandHandler
@@ -84,12 +80,12 @@ internal class CreditLine() {
 
     @EventSourcingHandler
     fun on(event: CreditLineIncreased) {
-        threshold = event.newThreshold
+        threshold += event.amount
     }
 
     @EventSourcingHandler
     fun on(event: CreditLineDecreased) {
-        threshold = event.newThreshold
+        threshold -= event.amount
     }
 
     @EventSourcingHandler

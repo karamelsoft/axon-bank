@@ -17,13 +17,13 @@ data class CreditLineOpened(
 
 data class CreditLineIncreased(
     override val creditLineId: CreditLineId,
-    val newThreshold: Double,
+    val amount: Double,
     override val timestamp: Instant = Instant.now()
 ): CreditLineEvent
 
 data class CreditLineDecreased(
     override val creditLineId: CreditLineId,
-    val newThreshold: Double,
+    val amount: Double,
     override val timestamp: Instant = Instant.now()
 ): CreditLineEvent
 
