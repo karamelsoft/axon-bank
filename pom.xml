@@ -114,6 +114,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.karamelsoft.axon.bank.services.credits</groupId>
+				<artifactId>credits-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.karamelsoft.axon.bank.services.customers</groupId>
 				<artifactId>customers-api</artifactId>
 				<version>${project.version}</version>

@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  credits-command:
+    image: axonbank/credits-command:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm
+    networks:
+      - axon-bank
+
+networks:
+  axon-bank:
+    external: true
