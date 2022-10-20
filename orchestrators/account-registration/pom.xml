@@ -27,6 +27,10 @@
             <groupId>org.karamelsoft.axon.bank.services.cards</groupId>
             <artifactId>cards-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.karamelsoft.axon.bank.services.credits</groupId>
+            <artifactId>credits-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -38,6 +42,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

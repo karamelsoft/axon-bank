@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux
 
 @RestController
 @RequestMapping("/credits")
-class CreditsController(val eventStore: EventStore) {
+class CreditController(val eventStore: EventStore) {
 
     @GetMapping("/{creditLineId}/history")
     fun getHistory(creditLineId: String): Flux<Event> {
