@@ -1,28 +1,61 @@
 ###
 # @name = Deposit Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE44585299287074/deposit
+POST http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/deposit
 Content-Type: application/json
 
 {
   "amount": 28.43,
-  "from": "BE12345678901234",
+  "from": "BE45640225317327",
   "description": "For the drinks at the bar"
 }
 
 ###
 # @name = Withdraw Amount
-POST http://localhost:8081/service/interfaces/http/accounts/BE44585299287074/withdraw
+POST http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/withdraw
 Content-Type: application/json
 
 {
   "amount": 15.78,
-  "to": "Myself",
+  "to": "BE45640225317327",
   "description": "For the amazing party"
 }
 
 ###
+# @name = Open Credit Line
+POST http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/creditLine
+Content-Type: application/json
+
+{
+  "amount": 50.03
+}
+
+###
+# @name = Increase Credit Line
+POST http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/creditLine/increase
+Content-Type: application/json
+
+{
+  "amount": 100.0
+}
+
+###
+# @name = Decrease Credit Line
+POST http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/creditLine/decrease
+Content-Type: application/json
+
+{
+  "amount": 25.0
+}
+
+###
+# @name = Close Credit Line
+DELETE http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/creditLine
+Content-Type: application/json
+
+
+###
 # @name = Get Account History
-GET http://localhost:8081/service/interfaces/http/accounts/BE44585299287074/history
+GET http://localhost:8081/service/interfaces/http/accounts/BE45640225317327/history
 Content-Type: application/json
 
 ###

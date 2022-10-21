@@ -37,3 +37,26 @@ data class AccountClosed(
     val description: String? = null,
     override val timestamp: Instant = Instant.now()
 ): AccountEvent
+
+data class CreditLineOpened(
+    override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountEvent
+
+data class CreditLineIncreased(
+    override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountEvent
+
+data class CreditLineDecreased(
+    override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountEvent
+
+data class CreditLineClosed(
+    override val accountId: AccountId,
+    override val timestamp: Instant = Instant.now()
+): AccountEvent

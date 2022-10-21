@@ -38,3 +38,32 @@ data class CloseAccount(
     val description: String? = null,
     override val timestamp: Instant = Instant.now()
 ): AccountCommand
+
+data class OpenCreditLine(
+    @TargetAggregateIdentifier override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountCommand
+
+data class IncreaseCreditLine(
+    @TargetAggregateIdentifier override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountCommand
+
+data class DecreaseCreditLine(
+    @TargetAggregateIdentifier override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountCommand
+
+data class CloseCreditLine(
+    @TargetAggregateIdentifier override val accountId: AccountId,
+    override val timestamp: Instant = Instant.now()
+): AccountCommand
+
+data class AmountBorrowed(
+    @TargetAggregateIdentifier override val accountId: AccountId,
+    val amount: Double,
+    override val timestamp: Instant = Instant.now()
+): AccountCommand
