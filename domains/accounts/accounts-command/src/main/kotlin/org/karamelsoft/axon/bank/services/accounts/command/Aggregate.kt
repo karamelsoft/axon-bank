@@ -52,7 +52,7 @@ internal class Account() {
         balance < command.amount -> notEnoughCredit()
         else -> Status.of<Unit> {
             AggregateLifecycle.apply(
-                AmountWithdrew(
+                AmountWithdrawn(
                     accountId = accountId,
                     amount = command.amount,
                     to = command.to,
@@ -88,7 +88,7 @@ internal class Account() {
     }
 
     @EventSourcingHandler
-    fun on(event: AmountWithdrew) {
+    fun on(event: AmountWithdrawn) {
         balance -= event.amount
     }
 

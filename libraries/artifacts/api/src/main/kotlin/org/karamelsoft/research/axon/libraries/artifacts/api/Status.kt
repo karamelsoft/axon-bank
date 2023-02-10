@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.slf4j.LoggerFactory
 import reactor.core.publisher.Mono
 
-sealed interface Status<T> {
+sealed interface /**/Status<T> {
     companion object {
         fun <T> ok(provider: () -> T) = Ok(provider())
         fun <T> of(operation: () -> T) = try {

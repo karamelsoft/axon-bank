@@ -1,6 +1,6 @@
 ###
 # @name = Block card
-POST http://localhost:8081/service/interfaces/http/cards/6804605504711702/block
+POST http://localhost:8081/service/interfaces/http/cards/6277603035380234/block
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 # @name = Setup Pin Card
-PUT http://localhost:8081/service/interfaces/http/cards/6804605504711702/pin/setup
+PUT http://localhost:8081/service/interfaces/http/cards/6277603035380234/pin/setup
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 # @name = Change Pin Card
-POST http://localhost:8081/service/interfaces/http/cards/6804605504711702/pin/change
+POST http://localhost:8081/service/interfaces/http/cards/6277603035380234/pin/change
 Content-Type: application/json
 
 {
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ###
 # @name = Validate Pin Card
-POST http://localhost:8081/service/interfaces/http/cards/6804605504711702/pin/validate
+POST http://localhost:8081/service/interfaces/http/cards/6277603035380234/pin/validate
 Content-Type: application/json
 
 {
@@ -39,7 +39,7 @@ Content-Type: application/json
 
 ###
 # @name = Validate Pin Card With Wrong Code
-POST http://localhost:8081/service/interfaces/http/cards/6804605504711702/pin/validate
+POST http://localhost:8081/service/interfaces/http/cards/6277603035380234/pin/validate
 Content-Type: application/json
 
 {
@@ -48,17 +48,17 @@ Content-Type: application/json
 
 ###
 # @name = Get Card History
-GET http://localhost:8081/service/interfaces/http/cards/6804605504711702/history
+GET http://localhost:8081/service/interfaces/http/cards/6277603035380234/history
 Content-Type: application/json
 
 ###
 # @name = Pay By Card
-POST http://localhost:8081/service/interfaces/http/cards/6804605504711702/payment
+POST http://localhost:8081/service/interfaces/http/cards/6277603035380234/payment
 Content-Type: application/json
 
 {
   "pinCode": "1234",
   "amount": "50",
-  "destination": "BE84553484463795",
+  "destination": "BE40835545172664",
   "description": "mon shopping du dimanche"
 }

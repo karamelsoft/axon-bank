@@ -3,7 +3,7 @@ package org.karamelsoft.axon.bank.interfaces.http.accounts
 import org.karamelsoft.axon.bank.interfaces.http.Event
 import org.karamelsoft.axon.bank.services.accounts.api.AccountClosed
 import org.karamelsoft.axon.bank.services.accounts.api.AmountDeposited
-import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrew
+import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrawn
 import org.karamelsoft.axon.bank.services.accounts.api.NewAccountOpened
 import java.time.Instant
 
@@ -54,7 +54,7 @@ data class AccountState(
         is Event -> handle(event.payload)
         is NewAccountOpened -> empty()
         is AmountDeposited -> deposited(event.amount)
-        is AmountWithdrew -> withdrew(event.amount)
+        is AmountWithdrawn -> withdrew(event.amount)
         is AccountClosed -> closed()
         else -> throw IllegalStateException("unknown event: ${event.javaClass.canonicalName}")
     }

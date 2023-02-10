@@ -3,7 +3,7 @@ package org.karamelsoft.axon.bank.views.customer.dashboard.query.interfaces
 import org.axonframework.eventhandling.EventHandler
 import org.karamelsoft.axon.bank.services.accounts.api.AccountClosed
 import org.karamelsoft.axon.bank.services.accounts.api.AmountDeposited
-import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrew
+import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrawn
 import org.karamelsoft.axon.bank.services.accounts.api.NewAccountOpened
 import org.karamelsoft.axon.bank.services.cards.api.CardBlocked
 import org.karamelsoft.axon.bank.services.cards.api.CardCreated
@@ -69,7 +69,7 @@ class CustomerDashboardEventHandler(private val customerDashboardRepository: Cus
     }
 
     @EventHandler
-    fun on(event: AmountWithdrew) {
+    fun on(event: AmountWithdrawn) {
         logger.trace("Received AmountWithdrew for account id: ${event.accountId}")
         customerDashboardRepository.findByAccount(event.accountId)
             ?.withdrawAmount(event.amount, event.timestamp)

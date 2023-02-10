@@ -23,7 +23,7 @@ data class AmountDeposited(
     override val timestamp: Instant = Instant.now()
 ): AccountEvent
 
-data class AmountWithdrew(
+data class AmountWithdrawn(
     override val accountId: AccountId,
     val amount: Double,
     val to: AccountId,

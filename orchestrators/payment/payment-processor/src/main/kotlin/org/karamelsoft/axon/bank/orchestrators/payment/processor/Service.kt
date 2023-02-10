@@ -12,7 +12,7 @@ import org.karamelsoft.research.axon.libraries.artifacts.api.andThenMono
 import org.springframework.stereotype.Component
 
 @Component
-class PaymentService(val commandGateway: ReactorCommandGateway) {
+class PaymentSaga(val commandGateway: ReactorCommandGateway) {
 
     @CommandHandler
     fun handle(command: PayByCard): Status<Unit> {

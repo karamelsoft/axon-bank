@@ -6,20 +6,20 @@ import org.axonframework.modelling.saga.SagaEventHandler
 import org.axonframework.modelling.saga.StartSaga
 import org.axonframework.spring.stereotype.Saga
 import org.karamelsoft.axon.bank.services.accounts.api.AmountDeposited
-import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrew
+import org.karamelsoft.axon.bank.services.accounts.api.AmountWithdrawn
 import org.karamelsoft.axon.bank.services.accounts.api.DepositAmount
 import org.karamelsoft.research.axon.libraries.artifacts.api.Status
 import org.springframework.beans.factory.annotation.Autowired
 
 @Saga
-class TransferService {
+class TransferProcess {
 
     @Autowired
     private lateinit var commandGateway: ReactorCommandGateway
 
     @StartSaga
     @SagaEventHandler(associationProperty = "operationId")
-    fun on(event: AmountWithdrew) {
+    fun on(event: AmountWithdrawn) {
         commandGateway.send<Status<Unit>>(DepositAmount(
             accountId = event.to,
             amount = event.amount,
