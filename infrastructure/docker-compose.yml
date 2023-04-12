@@ -7,9 +7,11 @@ services:
       - "8081:80"
     networks:
       - axon-bank
+    depends_on:
+      - axonserver
 
   axonserver:
-    image: axoniq/axonserver:latest
+    image: axoniq/axonserver:latest-jdk-17-dev
     ports:
       - "8024:8024"
       - "8124:8124"

@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM openjdk:17-ea-32-jdk-slim
 
 ARG JAR_FILE
 ADD target/${JAR_FILE} /usr/share/app/app.jar

@@ -26,15 +26,15 @@ Content-Type: application/json
 
 {
   "details": {
-    "firstName": "Marcel",
-    "lastName": "Patoulatchy",
-    "birthDate": "1967-01-02"
+    "firstName": "Anthony",
+    "lastName": "Malcourant",
+    "birthDate": "1986-10-29"
   },
   "address": {
-    "street": "Avenue de la Paix",
-    "number": "69",
-    "postalCode": "5678",
-    "city": "Foutisse",
+    "street": "Rue Louis Haye",
+    "number": "208",
+    "postalCode": "5000",
+    "city": "Namur",
     "country": "Belgium"
   }
 }
