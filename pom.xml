@@ -19,7 +19,8 @@
        <guava.version>31.1-jre</guava.version>
        <kotlin-logging.version>3.0.5</kotlin-logging.version>
        <mockk.version>1.12.0</mockk.version>
-   </properties>
+        <inspector-axon-spring-boot-starter.version>0.1.1</inspector-axon-spring-boot-starter.version>
+    </properties>
 
    <modules>
        <module>libraries</module>
@@ -51,6 +52,11 @@
                <version>${axon.version}</version>
                <scope>import</scope>
                <type>pom</type>
+           </dependency>
+           <dependency>
+               <groupId>io.axoniq.inspector</groupId>
+               <artifactId>inspector-axon-spring-boot-starter</artifactId>
+               <version>${inspector-axon-spring-boot-starter.version}</version>
            </dependency>
            <dependency>
                <groupId>org.karamelsoft.axon.bank.libraries</groupId>
